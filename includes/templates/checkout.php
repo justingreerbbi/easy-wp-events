@@ -234,6 +234,15 @@ if ( ! empty( $_POST['card'] ) ) {
                             </div>
                         </div>
 
+                        <div class="row mt-3 mb-3">
+                            <span class="font-weight-normal card-text">Names of Guests*</span>
+                            <div class="">
+                                <textarea type="text" name="address" class="form-control" placeholder=""
+                                          required="required"
+                                          value="<?php ewp_field( 'name_of_guests' ); ?>"><?php ewp_field( 'name_of_guests' ); ?></textarea>
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>

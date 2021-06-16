@@ -213,6 +213,79 @@ function ewp_events_css_and_js() {
 	}
 }
 
+add_action( 'admin_menu', 'mt_add_pages' );
+
+function mt_add_pages() {
+	add_submenu_page(
+		'edit.php?post_type=ewp_events',
+		__( 'Settings', 'menu-test' ),
+		__( 'Settings', 'menu-test' ),
+		'manage_options',
+		'ewp_event_settings',
+		'ewp_events_options_page'
+	);
+
+	function mt_settings_page() {
+		echo "<h2>" . __( 'Test Settings', 'menu-test' ) . "</h2>";
+	}
+}
+
+add_action( 'admin_init', 'ewp_events_plugin_register_settings' );
+function ewp_events_plugin_register_settings() {
+	add_option( 'ewp_events_options', 'This is my option value.' );
+	register_setting( 'ewp_events_options_group', 'ewp_events_options', 'myplugin_callback' );
+}
+
+add_action( 'admin_menu', 'ewp_events_register_options_page' );
+function ewp_events_register_options_page() {
+	add_options_page( 'Page Title', 'Plugin Menu', 'manage_options', 'myplugin', 'ewp_events_options_page' );
+}
+
+function ewp_events_options_page() {
+	$options = get_option( 'ewp_events_options' );
+	?>
+    <div class="wrap">
+        <h1>Easy WP Events Settings</h1>
+        <form method="post" action="options.php">
+			<?php settings_fields( 'ewp_events_options_group' ); ?>
+            <h3>Stripe API Keys</h3>
+            <table>
+                <tr valign="top">
+                    <td>
+                        <label>Live Stripe Publishable Key</label><br/>
+                        <input type="text" name="ewp_events_options[ewp_events_live_stripe_publishable_key]"
+                               value="<?php echo @$options['ewp_events_live_stripe_publishable_key']; ?>"/>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td>
+                        <label>Live Stripe Secret Key</label><br/>
+                        <input type="text" name="ewp_events_options[ewp_events_live_stripe_secret_key]"
+                               value="<?php echo @$options['ewp_events_live_stripe_secret_key']; ?>"/>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <td>
+                        <label>Test Stripe Publishable Key</label><br/>
+                        <input type="text" name="ewp_events_options[ewp_events_test_stripe_publishable_key]"
+                               value="<?php echo @$options['ewp_events_test_stripe_publishable_key']; ?>"/>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td>
+                        <label>Test Stripe Secret Key</label><br/>
+                        <input type="text" name="ewp_events_options[ewp_events_secret_stripe_secret_key]"
+                               value="<?php echo @$options['ewp_events_secret_stripe_secret_key']; ?>"/>
+                    </td>
+                </tr>
+            </table>
+			<?php submit_button(); ?>
+        </form>
+    </div>
+	<?php
+}
+
 require 'plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	'https://github.com/justingreerbbi/easy-wp-events/',
@@ -220,7 +293,7 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	'easy_wp_events'
 );
 
-$myUpdateChecker->setBranch('production');
+$myUpdateChecker->setBranch( 'production' );
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
 
 function EWPET() {

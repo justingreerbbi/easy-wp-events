@@ -1,7 +1,4 @@
-<?php
-global $post;
-//print_r( get_post_meta( $post->ID, 'event_tickets', true ) );
-?>
+<?php global $post; ?>
 <script type="text/javascript">
     jQuery(document).on('click', '#addRow', function () {
         var clonedRow = jQuery('.ewpevents-pricing tr.single-ticket-row:first').clone();
@@ -82,7 +79,7 @@ global $post;
                 <p class="description">
                     Ticket Prices and Availability are listed below. Manage Tickets
                     available for this event using the editor below.
-                    <a href="<?php print admin_url('admin-post.php'); ?>?action=download_event_data&event=<?php print $post->ID; ?>">Download
+                    <a href="<?php print admin_url( 'admin-post.php' ); ?>?action=download_event_data&event=<?php print $post->ID; ?>">Download
                         Purchases</a>
                 <div class="inputFormRow">
                     <table class="widefat ewpevents-pricing form-group mt-3">
@@ -96,7 +93,8 @@ global $post;
                         <tbody>
 						<?php
 						$event_tickets = get_post_meta( $post->ID, 'event_tickets', true );
-						//print_r( $event_tickets );
+
+						print_r( $event_tickets );
 
 						foreach ( $event_tickets as $key => $value ): ?>
 
@@ -141,7 +139,7 @@ global $post;
                                        autocomplete="off">
                             </td>
                             <td>
-                                <input type="number" name="ticket_avalaibility[]" class="form-control mt-1 mb-1"
+                                <input type="number" name="ticket_availability[]" class="form-control mt-1 mb-1"
                                        autocomplete="off">
                             </td>
                             <td>

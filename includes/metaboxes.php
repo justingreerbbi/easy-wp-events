@@ -27,10 +27,11 @@ function wpdocs_save_meta_box( $post_id ) {
 
 	// Take the ticket prices and put it into raw and formatted format
 	$event_tickets = array();
-	for ( $x = 0; $x < count( $_POST['ticket_label'] ); $x ++ ) {
+	for ( $x = 0; $x < count( array_filter( $_POST['ticket_label'] ) ); $x ++ ) {
 		if ( empty( $_POST['ticket_label'][ $x ] ) ) {
 			continue;
 		}
+
 		$event_tickets[ ewp_events_sanatize_event_title( $_POST['ticket_label'][ $x ] ) ] = array(
 			'id'                  => ewp_events_sanatize_event_title( $_POST['ticket_label'][ $x ] ),
 			'label'               => $_POST['ticket_label'][ $x ],
@@ -65,7 +66,7 @@ function ewp_event_download_event_purchase_history() {
 	// @todo Add WP NONCE Security Check
 	// @todo Add human readable formatting for tickets on the export
 	if ( ! is_admin() ) {
-		wp_die('You do not have permission to access this data');
+		wp_die( 'You do not have permission to access this data' );
 	}
 
 	$event = intval( $_GET['event'] );
