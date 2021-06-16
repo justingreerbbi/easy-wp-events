@@ -5,6 +5,7 @@ if ( ! empty( $_POST['ewp_event_checkout'] ) ) {
 }
 get_header();
 global $post;
+$event_options = get_option( 'ewp_events_options' );
 ?>
 <style>
     .StripeElement {
@@ -32,6 +33,8 @@ global $post;
     input[type="text"], input[type="number"] {
         font-size: inherit;
     }
+
+    <?php print $event_options['custom_css_single_event_page']; ?>
 </style>
 <div class="ewp-events-content">
     <div class="container">

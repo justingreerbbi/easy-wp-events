@@ -94,7 +94,7 @@
 						<?php
 						$event_tickets = get_post_meta( $post->ID, 'event_tickets', true );
 
-						print_r( $event_tickets );
+						//print_r( $event_tickets );
 
 						foreach ( $event_tickets as $key => $value ): ?>
 
