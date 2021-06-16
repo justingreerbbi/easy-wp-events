@@ -15,18 +15,9 @@ class EWP_Event_Stripe_Gateway {
 
 	public function createCharge( $post, $cart ) {
 
-		// Create a Customer
-		//print '<pre>';
-		//print_r( $cart );
-		//print '</pre>';
-
 		$event_ticket_types = get_post_meta( $cart['event'], 'event_tickets', true );
-		//print_r( $event_ticket_types );
 
 		$exp = explode( "/", $_POST['card']['exp'], 2 );
-
-		//print_r( $exp );
-		//exit;
 
 		$card_data = array(
 			'card[number]'        => $_POST['card']['num'],
@@ -90,7 +81,6 @@ class EWP_Event_Stripe_Gateway {
 		 * [used] =>
 		 * )
 		 */
-		//print_r( $token_response );
 
 		// If there is no error, let's display
 		if ( ! isset( $token_response->error ) ) {
@@ -105,12 +95,7 @@ class EWP_Event_Stripe_Gateway {
 				'description' => 'This needs to be changed to be descriptive of the event'
 			) );
 
-			// Log the sale
-			//global $wpdb;
-			//$wpdb->insert( $wpdb->prefix . 'ewp_event_orders', array() );
-
-			if ( $charge !== false ) {
-				$charge = json_decode( $charge );
+			if ( ! isset( $charge->error ) ) {
 				global $wpdb;
 				$insert_id = $wpdb->insert( $wpdb->prefix . 'ewp_event_orders', array(
 					'event_id'      => $cart['event'],
@@ -130,6 +115,8 @@ class EWP_Event_Stripe_Gateway {
 				 * Delete the transient
 				 */
 				delete_transient( 'wp_easy_event_checkout_' . $_GET['cart'] );
+
+				// @todo Add logic to prevent the charge from happening again
 
 				/**
 				 * Deduct the tickets sold from the tickets remaining.
@@ -173,8 +160,15 @@ class EWP_Event_Stripe_Gateway {
 					site_url()
 				) );
 				exit;
+
 			} else {
-				exit( $this->last_error_message );
+
+				$respond = array(
+					'error'         => $charge->error,
+					'error_message' => $charge->error->message,
+				);
+
+				return (object) $respond;
 			}
 
 		} else {
@@ -189,6 +183,14 @@ class EWP_Event_Stripe_Gateway {
 		}
 	}
 
+	/**
+	 * Preform the charge using the order details. Details should be passed to this method only by the createCharge
+	 * method and nothing else. All validation and prep happens there.
+	 *
+	 * @param $order
+	 *
+	 * @return false|mixed
+	 */
 	public function doCharge( $order ) {
 		$charge = wp_remote_post( 'https://api.stripe.com/v1/charges', array(
 			'body'    => $order,
@@ -196,17 +198,7 @@ class EWP_Event_Stripe_Gateway {
 				'Authorization' => 'Bearer ' . $this->api_secret_key,
 			),
 		) );
-		$charge = json_encode( $charge['body'] );
 
-		// Handle the return
-		if ( isset( $charge->error ) ) {
-			// @todo Add logging to the plugin here.
-			$this->last_error         = $charge->error->code;
-			$this->last_error_message = $charge->error->message;
-
-			return false;
-		} else {
-			return json_decode( $charge );
-		}
+		return json_decode( wp_remote_retrieve_body( $charge ) );
 	}
 }

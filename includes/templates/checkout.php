@@ -281,7 +281,8 @@ if ( ! empty( $_POST['card'] ) ) {
                                                     class="font-weight-normal card-text">Expiry Date*</span>
                                             <div class="input"><i class="fa fa-calendar"></i>
                                                 <input type="text" class="form-control" name="card[exp]"
-                                                       placeholder="MM/YY" id="card_exp" required="required" onkeyup="formatExpDate(event)">
+                                                       placeholder="MM/YY" id="card_exp" required="required"
+                                                       onkeyup="formatExpDate(event)">
                                             </div>
                                         </div>
                                         <div class="col-md-6"><span class="font-weight-normal card-text">CVC/CVV*</span>
