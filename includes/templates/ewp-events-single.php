@@ -74,9 +74,10 @@ global $post;
             </div>
             <div class="col-2">
                 <div class="ewp-events-module mb-5 btn-block form-group">
-                    <button class="btn btn-success btn-lg input-block-level form-control btn-block">
+                    <!--<button class="btn btn-success btn-lg input-block-level form-control btn-block">
                         View Tickets
-                    </button>
+                    </button>-->
+                    <h4>Event Info</h4>
                 </div>
                 <div class="ewp-events-module mb-5">
                     <h5>Date and Time</h5>
