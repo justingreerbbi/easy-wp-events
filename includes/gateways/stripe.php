@@ -133,26 +133,38 @@ class EWP_Event_Stripe_Gateway {
 				}
 				update_post_meta( $cart['event'], 'event_tickets', $event_ticket_types );
 
+				// GET CUSTOM SUCCESS MESSAGE FOR THE EMAIL
+				$custom_success_message = get_post_meta( $cart['event'], 'event_success_message', true );
+
+				$receipt = '<strong>Event</strong>: ' . get_the_title( $cart['event'] ) . '<br/>';
+				$receipt .= '<strong>Purchaser</strong>: ' . $_POST['firstname'] . ' ' . $_POST['lastname'] . '<br/>';
+				$receipt .= '<strong>Email</strong>: ' . $_POST['email'] . '<br/>';
+				$receipt .= '<strong>Charge ID</strong>: ' . $charge->id . '<br/>';
+
+
 				/**
 				 * Send an email to the purchaser with the info
 				 */
-				$email_content = file_get_contents( dirname( __FILE__ ) . '/email/success.html' );
+				$email_content = file_get_contents( EWPET_ABSPATH . '/includes/templates/email/success.html' );
 
 				// Dynamic Email Content
 				$ticket_list = '';
 				foreach ( $cart['contents'] as $item ) {
 					$ticket_list .= '<li>' . $item['name'] . '<small>(x' . $item['tickets_sold'] . '</small><span>' . ewp_event_price( $item['total'] ) . '</span></li>';
 				}
-				$email_content = str_replace( '{{TICKET_LIST}}', $ticket_list, $email_content );
-				$email_content = str_replace( '{{SUB_TOTAL}}', $_POST['sub_total'], $email_content );
-				$email_content = str_replace( '{{SITE_URL}}', site_url(), $email_content );
+				$custom_success_message = str_replace( '{{TICKET_PURCHASE_INFO}}', $ticket_list, $custom_success_message );
+				$custom_success_message = str_replace( '{{SUB_TOTAL}}', '<strong>Total:</strong> $'.$_POST['sub_total'], $custom_success_message );
+				$custom_success_message = str_replace( '{{RECEIPT_INFO}}', $receipt, $custom_success_message );
+
+				// Add the content to the template template success.html
+				$email_content = str_replace( '{{SUCCESS_MESSAGE}}', $custom_success_message, $email_content );
 
 				$content_type = function () {
 					return 'text/html';
 				};
 				add_filter( 'wp_mail_content_type', $content_type );
-				wp_mail( get_option( 'admin_email' ), 'New Ticket Sale', $email_content );
-				wp_mail( $_POST['email'], 'Ticket Sale Information', $email_content );
+				wp_mail( 'justin@justin-greer.com', 'New Ticket Sale', $email_content );
+				//wp_mail( $_POST['email'], 'Ticket Sale Information', $email_content );
 				remove_filter( 'wp_mail_content_type', $content_type );
 
 				wp_redirect( add_query_arg(
