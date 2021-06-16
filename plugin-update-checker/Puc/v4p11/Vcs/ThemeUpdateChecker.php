@@ -1,6 +1,6 @@
 <?php
 
-if ( !class_exists('Puc_v4p11_Vcs_ThemeUpdateChecker', false) ):
+if ( ! class_exists( 'Puc_v4p11_Vcs_ThemeUpdateChecker', false ) ):
 
 	class Puc_v4p11_Vcs_ThemeUpdateChecker extends Puc_v4p11_Theme_UpdateChecker implements Puc_v4p11_Vcs_BaseChecker {
 		/**
@@ -22,26 +22,26 @@ if ( !class_exists('Puc_v4p11_Vcs_ThemeUpdateChecker', false) ):
 		 * @param int $checkPeriod
 		 * @param string $optionName
 		 */
-		public function __construct($api, $stylesheet = null, $customSlug = null, $checkPeriod = 12, $optionName = '') {
+		public function __construct( $api, $stylesheet = null, $customSlug = null, $checkPeriod = 12, $optionName = '' ) {
 			$this->api = $api;
-			$this->api->setHttpFilterName($this->getUniqueName('request_update_options'));
+			$this->api->setHttpFilterName( $this->getUniqueName( 'request_update_options' ) );
 
-			parent::__construct($api->getRepositoryUrl(), $stylesheet, $customSlug, $checkPeriod, $optionName);
+			parent::__construct( $api->getRepositoryUrl(), $stylesheet, $customSlug, $checkPeriod, $optionName );
 
-			$this->api->setSlug($this->slug);
+			$this->api->setSlug( $this->slug );
 		}
 
 		public function requestUpdate() {
 			$api = $this->api;
-			$api->setLocalDirectory($this->package->getAbsoluteDirectoryPath());
+			$api->setLocalDirectory( $this->package->getAbsoluteDirectoryPath() );
 
-			$update = new Puc_v4p11_Theme_Update();
+			$update       = new Puc_v4p11_Theme_Update();
 			$update->slug = $this->slug;
 
 			//Figure out which reference (tag or branch) we'll use to get the latest version of the theme.
-			$updateSource = $api->chooseReference($this->branch);
+			$updateSource = $api->chooseReference( $this->branch );
 			if ( $updateSource ) {
-				$ref = $updateSource->name;
+				$ref                  = $updateSource->name;
 				$update->download_url = $updateSource->downloadUrl;
 			} else {
 				do_action(
@@ -59,37 +59,40 @@ if ( !class_exists('Puc_v4p11_Vcs_ThemeUpdateChecker', false) ):
 
 			//Get headers from the main stylesheet in this branch/tag. Its "Version" header and other metadata
 			//are what the WordPress install will actually see after upgrading, so they take precedence over releases/tags.
-			$remoteHeader = $this->package->getFileHeader($api->getRemoteFile('style.css', $ref));
-			$update->version = Puc_v4p11_Utils::findNotEmpty(array(
+			$remoteHeader    = $this->package->getFileHeader( $api->getRemoteFile( 'style.css', $ref ) );
+			$update->version = Puc_v4p11_Utils::findNotEmpty( array(
 				$remoteHeader['Version'],
-				Puc_v4p11_Utils::get($updateSource, 'version'),
-			));
+				Puc_v4p11_Utils::get( $updateSource, 'version' ),
+			) );
 
 			//The details URL defaults to the Theme URI header or the repository URL.
-			$update->details_url = Puc_v4p11_Utils::findNotEmpty(array(
+			$update->details_url = Puc_v4p11_Utils::findNotEmpty( array(
 				$remoteHeader['ThemeURI'],
-				$this->package->getHeaderValue('ThemeURI'),
+				$this->package->getHeaderValue( 'ThemeURI' ),
 				$this->metadataUrl,
-			));
+			) );
 
-			if ( empty($update->version) ) {
+			if ( empty( $update->version ) ) {
 				//It looks like we didn't find a valid update after all.
 				$update = null;
 			}
 
-			$update = $this->filterUpdateResult($update);
+			$update = $this->filterUpdateResult( $update );
+
 			return $update;
 		}
 
 		//FIXME: This is duplicated code. Both theme and plugin subclasses that use VCS share these methods.
 
-		public function setBranch($branch) {
+		public function setBranch( $branch ) {
 			$this->branch = $branch;
+
 			return $this;
 		}
 
-		public function setAuthentication($credentials) {
-			$this->api->setAuthentication($credentials);
+		public function setAuthentication( $credentials ) {
+			$this->api->setAuthentication( $credentials );
+
 			return $this;
 		}
 
@@ -100,18 +103,18 @@ if ( !class_exists('Puc_v4p11_Vcs_ThemeUpdateChecker', false) ):
 		public function getUpdate() {
 			$update = parent::getUpdate();
 
-			if ( isset($update) && !empty($update->download_url) ) {
-				$update->download_url = $this->api->signDownloadUrl($update->download_url);
+			if ( isset( $update ) && ! empty( $update->download_url ) ) {
+				$update->download_url = $this->api->signDownloadUrl( $update->download_url );
 			}
 
 			return $update;
 		}
 
-		public function onDisplayConfiguration($panel) {
-			parent::onDisplayConfiguration($panel);
-			$panel->row('Branch', $this->branch);
-			$panel->row('Authentication enabled', $this->api->isAuthenticationEnabled() ? 'Yes' : 'No');
-			$panel->row('API client', get_class($this->api));
+		public function onDisplayConfiguration( $panel ) {
+			parent::onDisplayConfiguration( $panel );
+			$panel->row( 'Branch', $this->branch );
+			$panel->row( 'Authentication enabled', $this->api->isAuthenticationEnabled() ? 'Yes' : 'No' );
+			$panel->row( 'API client', get_class( $this->api ) );
 		}
 	}
 

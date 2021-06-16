@@ -1,6 +1,6 @@
 <?php
 
-if ( !class_exists('Puc_v4p11_StateStore', false) ):
+if ( ! class_exists( 'Puc_v4p11_StateStore', false ) ):
 
 	class Puc_v4p11_StateStore {
 		/**
@@ -28,7 +28,7 @@ if ( !class_exists('Puc_v4p11_StateStore', false) ):
 		 */
 		private $isLoaded = false;
 
-		public function __construct($optionName) {
+		public function __construct( $optionName ) {
 			$this->optionName = $optionName;
 		}
 
@@ -42,6 +42,7 @@ if ( !class_exists('Puc_v4p11_StateStore', false) ):
 		 */
 		public function timeSinceLastCheck() {
 			$this->lazyLoad();
+
 			return time() - $this->lastCheck;
 		}
 
@@ -50,6 +51,7 @@ if ( !class_exists('Puc_v4p11_StateStore', false) ):
 		 */
 		public function getLastCheck() {
 			$this->lazyLoad();
+
 			return $this->lastCheck;
 		}
 
@@ -61,6 +63,7 @@ if ( !class_exists('Puc_v4p11_StateStore', false) ):
 		public function setLastCheckToNow() {
 			$this->lazyLoad();
 			$this->lastCheck = time();
+
 			return $this;
 		}
 
@@ -69,16 +72,19 @@ if ( !class_exists('Puc_v4p11_StateStore', false) ):
 		 */
 		public function getUpdate() {
 			$this->lazyLoad();
+
 			return $this->update;
 		}
 
 		/**
 		 * @param Puc_v4p11_Update|null $update
+		 *
 		 * @return $this
 		 */
-		public function setUpdate(Puc_v4p11_Update $update = null) {
+		public function setUpdate( Puc_v4p11_Update $update = null ) {
 			$this->lazyLoad();
 			$this->update = $update;
+
 			return $this;
 		}
 
@@ -87,16 +93,19 @@ if ( !class_exists('Puc_v4p11_StateStore', false) ):
 		 */
 		public function getCheckedVersion() {
 			$this->lazyLoad();
+
 			return $this->checkedVersion;
 		}
 
 		/**
 		 * @param string $version
+		 *
 		 * @return $this
 		 */
-		public function setCheckedVersion($version) {
+		public function setCheckedVersion( $version ) {
 			$this->lazyLoad();
-			$this->checkedVersion = strval($version);
+			$this->checkedVersion = strval( $version );
+
 			return $this;
 		}
 
@@ -107,9 +116,10 @@ if ( !class_exists('Puc_v4p11_StateStore', false) ):
 		 */
 		public function getTranslations() {
 			$this->lazyLoad();
-			if ( isset($this->update, $this->update->translations) ) {
+			if ( isset( $this->update, $this->update->translations ) ) {
 				return $this->update->translations;
 			}
+
 			return array();
 		}
 
@@ -118,9 +128,9 @@ if ( !class_exists('Puc_v4p11_StateStore', false) ):
 		 *
 		 * @param array $translationUpdates
 		 */
-		public function setTranslations($translationUpdates) {
+		public function setTranslations( $translationUpdates ) {
 			$this->lazyLoad();
-			if ( isset($this->update) ) {
+			if ( isset( $this->update ) ) {
 				$this->update->translations = $translationUpdates;
 				$this->save();
 			}
@@ -129,21 +139,21 @@ if ( !class_exists('Puc_v4p11_StateStore', false) ):
 		public function save() {
 			$state = new stdClass();
 
-			$state->lastCheck = $this->lastCheck;
+			$state->lastCheck      = $this->lastCheck;
 			$state->checkedVersion = $this->checkedVersion;
 
-			if ( isset($this->update)) {
+			if ( isset( $this->update ) ) {
 				$state->update = $this->update->toStdClass();
 
-				$updateClass = get_class($this->update);
+				$updateClass        = get_class( $this->update );
 				$state->updateClass = $updateClass;
-				$prefix = $this->getLibPrefix();
-				if ( Puc_v4p11_Utils::startsWith($updateClass, $prefix) ) {
-					$state->updateBaseClass = substr($updateClass, strlen($prefix));
+				$prefix             = $this->getLibPrefix();
+				if ( Puc_v4p11_Utils::startsWith( $updateClass, $prefix ) ) {
+					$state->updateBaseClass = substr( $updateClass, strlen( $prefix ) );
 				}
 			}
 
-			update_site_option($this->optionName, $state);
+			update_site_option( $this->optionName, $state );
 			$this->isLoaded = true;
 		}
 
@@ -151,55 +161,58 @@ if ( !class_exists('Puc_v4p11_StateStore', false) ):
 		 * @return $this
 		 */
 		public function lazyLoad() {
-			if ( !$this->isLoaded ) {
+			if ( ! $this->isLoaded ) {
 				$this->load();
 			}
+
 			return $this;
 		}
 
 		protected function load() {
 			$this->isLoaded = true;
 
-			$state = get_site_option($this->optionName, null);
+			$state = get_site_option( $this->optionName, null );
 
-			if ( !is_object($state) ) {
-				$this->lastCheck = 0;
+			if ( ! is_object( $state ) ) {
+				$this->lastCheck      = 0;
 				$this->checkedVersion = '';
-				$this->update = null;
+				$this->update         = null;
+
 				return;
 			}
 
-			$this->lastCheck = intval(Puc_v4p11_Utils::get($state, 'lastCheck', 0));
-			$this->checkedVersion = Puc_v4p11_Utils::get($state, 'checkedVersion', '');
-			$this->update = null;
+			$this->lastCheck      = intval( Puc_v4p11_Utils::get( $state, 'lastCheck', 0 ) );
+			$this->checkedVersion = Puc_v4p11_Utils::get( $state, 'checkedVersion', '' );
+			$this->update         = null;
 
-			if ( isset($state->update) ) {
+			if ( isset( $state->update ) ) {
 				//This mess is due to the fact that the want the update class from this version
 				//of the library, not the version that saved the update.
 
 				$updateClass = null;
-				if ( isset($state->updateBaseClass) ) {
+				if ( isset( $state->updateBaseClass ) ) {
 					$updateClass = $this->getLibPrefix() . $state->updateBaseClass;
-				} else if ( isset($state->updateClass) && class_exists($state->updateClass) ) {
+				} else if ( isset( $state->updateClass ) && class_exists( $state->updateClass ) ) {
 					$updateClass = $state->updateClass;
 				}
 
 				if ( $updateClass !== null ) {
-					$this->update = call_user_func(array($updateClass, 'fromObject'), $state->update);
+					$this->update = call_user_func( array( $updateClass, 'fromObject' ), $state->update );
 				}
 			}
 		}
 
 		public function delete() {
-			delete_site_option($this->optionName);
+			delete_site_option( $this->optionName );
 
-			$this->lastCheck = 0;
+			$this->lastCheck      = 0;
 			$this->checkedVersion = '';
-			$this->update = null;
+			$this->update         = null;
 		}
 
 		private function getLibPrefix() {
-			$parts = explode('_', __CLASS__, 3);
+			$parts = explode( '_', __CLASS__, 3 );
+
 			return $parts[0] . '_' . $parts[1] . '_';
 		}
 	}

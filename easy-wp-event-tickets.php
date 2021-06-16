@@ -217,11 +217,11 @@ require 'plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	'https://github.com/justingreerbbi/easy-wp-events/',
 	__FILE__,
-	'unique-plugin-or-theme-slug'
+	'easy_wp_events'
 );
 
-//Set the branch that contains the stable release.
 $myUpdateChecker->setBranch('production');
+$myUpdateChecker->getVcsApi()->enableReleaseAssets();
 
 function EWPET() {
 	return EWPET::instance();
