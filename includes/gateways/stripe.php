@@ -14,6 +14,7 @@ class EWP_Event_Stripe_Gateway {
 	public $last_error_message = '';
 
 	public function createCharge( $post, $cart ) {
+		$plugin_options = get_option( 'ewp_events_options' );
 
 		$event_ticket_types = get_post_meta( $cart['event'], 'event_tickets', true );
 
@@ -34,7 +35,7 @@ class EWP_Event_Stripe_Gateway {
 		$response = wp_remote_post( 'https://api.stripe.com/v1/tokens', array(
 			'body'    => $card_data,
 			'headers' => array(
-				'Authorization' => 'Bearer ' . $this->api_secret_key,
+				'Authorization' => 'Bearer ' . $plugin_options['ewp_events_secret_stripe_secret_key']
 			),
 		) );
 
@@ -194,10 +195,13 @@ class EWP_Event_Stripe_Gateway {
 	 * @return false|mixed
 	 */
 	public function doCharge( $order ) {
+
+		$plugin_options = get_option( 'ewp_events_options' );
+
 		$charge = wp_remote_post( 'https://api.stripe.com/v1/charges', array(
 			'body'    => $order,
 			'headers' => array(
-				'Authorization' => 'Bearer ' . $this->api_secret_key,
+				'Authorization' => 'Bearer ' . $plugin_options['ewp_events_secret_stripe_secret_key'],
 			),
 		) );
 
