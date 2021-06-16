@@ -134,3 +134,20 @@ function ewp_event_cart_total() {
 function ewp_event_price( $price ) {
 	return '$' . number_format( $price, 2 );
 }
+
+function ewp_field( $field, $type = "post" ) {
+
+	if ( $type == 'post' ) {
+		if ( ! isset( $_POST[ $field ] ) ) {
+			print '';
+		}
+		$field = sanitize_text_field( $_POST[ $field ] );
+	} else {
+		if ( ! isset( $_GET[ $field ] ) ) {
+			print '';
+		}
+		$field = sanitize_text_field( $_GET[ $field ] );
+	}
+
+	print $field;
+}

@@ -143,13 +143,13 @@ if ( ! empty( $_POST['card'] ) ) {
                             <div class="col-md-6"><span class="font-weight-normal card-text">First Name*</span>
                                 <div class="">
                                     <input type="text" name="firstname" class="form-control" placeholder=""
-                                           required="required">
+                                           required="required" value="<?php ewp_field('firstname'); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6"><span class="font-weight-normal card-text">Last Name*</span>
                                 <div class="">
                                     <input type="text" name="lastname" class="form-control" placeholder=""
-                                           required="required">
+                                           required="required" value="<?php ewp_field('lastname'); ?>">
                                 </div>
                             </div>
                         </div>
@@ -157,7 +157,8 @@ if ( ! empty( $_POST['card'] ) ) {
                         <div class="row">
                             <span class="font-weight-normal card-text">Email*</span>
                             <div class="">
-                                <input type="text" name="email" class="form-control" placeholder="" required="required">
+                                <input type="text" name="email" class="form-control" placeholder="" required="required"
+                                value="<?php ewp_field('email'); ?>">
                             </div>
                         </div>
 
@@ -165,7 +166,7 @@ if ( ! empty( $_POST['card'] ) ) {
                             <span class="font-weight-normal card-text">Address*</span>
                             <div class="">
                                 <input type="text" name="address" class="form-control" placeholder=""
-                                       required="required">
+                                       required="required" value="<?php ewp_field('address'); ?>">
                             </div>
                         </div>
 
@@ -173,19 +174,19 @@ if ( ! empty( $_POST['card'] ) ) {
                             <div class="col-md-6"><span class="font-weight-normal card-text">City*</span>
                                 <div class="">
                                     <input type="text" name="city" class="form-control" placeholder=""
-                                           required="required">
+                                           required="required" value="<?php ewp_field('city'); ?>">
                                 </div>
                             </div>
                             <div class="col-md-3"><span class="font-weight-normal card-text">State*</span>
                                 <div class="">
                                     <input type="text" name="state" class="form-control" placeholder="" maxlength="2"
-                                           required="required">
+                                           required="required" value="<?php ewp_field('state'); ?>">
                                 </div>
                             </div>
                             <div class="col-md-3"><span class="font-weight-normal card-text">State*</span>
                                 <div class="">
                                     <input type="number" name="zipcode" class="form-control" placeholder=""
-                                           maxlength="5" required="required">
+                                           maxlength="5" required="required" value="<?php ewp_field('zipcode'); ?>">
                                 </div>
                             </div>
                         </div>
@@ -223,13 +224,14 @@ if ( ! empty( $_POST['card'] ) ) {
                                         <span class="font-weight-normal card-text">Name of Card*</span>
                                         <div class="">
                                             <input type="text" class="form-control" name="card[name]" placeholder=""
-                                                   required="required">
+                                                   required="required" <?php ewp_field('card[name]'); ?>>
                                         </div>
                                     </div>
                                     <span class="font-weight-normal card-text">Card Number*</span>
                                     <div class="input"><i class="fa fa-credit-card"></i>
                                         <input type="number" class="form-control" name="card[num]"
-                                               placeholder="0000 0000 0000 0000" id="cr_no" required="required">
+                                               placeholder="0000 0000 0000 0000" id="cr_no" required="required"
+	                                        <?php ewp_field('card[num]'); ?>>
                                     </div>
                                     <div class="row mt-3 mb-3">
                                         <div class="col-md-6"><span
@@ -280,7 +282,7 @@ if ( ! empty( $_POST['card'] ) ) {
                     </div>
                     <hr class="mt-0 line">
                     <div class="p-3 d-flex justify-content-between">
-                        <div class="d-flex flex-column"><span>Today you pay</span>
+                        <div class="d-flex flex-column"><small>Today you pay</small>
                             <!--<small>Donation in the amount of</small>-->
                         </div>
                         <span>$<?php print ewp_event_cart_total(); ?></span>

@@ -28,6 +28,10 @@ global $post;
     .StripeElement--webkit-autofill {
         background-color: #fefde5 !important;
     }
+
+    input[type="text"], input[type="number"] {
+        font-size: inherit;
+    }
 </style>
 <div class="ewp-events-content">
     <div class="container">
@@ -37,7 +41,7 @@ global $post;
             </div>
         </div>
         <div class="row">
-            <div class="col-9">
+            <div class="col-md-9">
                 <h5 class="mb-3">About This Event</h5>
 				<?php the_content(); ?>
 
@@ -51,8 +55,8 @@ global $post;
                         <input type="hidden" name="event_id" value="<?php print $post->ID; ?>"/>
                         <table>
                             <thead>
-                            <th width="90%">Ticket Type</th>
-                            <th width="10%">Qty</th>
+                            <th width=80%">Ticket Type</th>
+                            <th width="20%">Qty</th>
                             </thead>
 							<?php foreach ( $event_tickets as $event ) : ?>
                                 <tr>
@@ -72,7 +76,7 @@ global $post;
                     </form>
                 </div>
             </div>
-            <div class="col-2">
+            <div class="col-md-2">
                 <div class="ewp-events-module mb-5 btn-block form-group">
                     <!--<button class="btn btn-success btn-lg input-block-level form-control btn-block">
                         View Tickets
@@ -85,8 +89,8 @@ global $post;
 					$start_datetime = new DateTime( get_post_meta( $post->ID, 'start_date', true ) );
 					$end_datetime   = new DateTime( get_post_meta( $post->ID, 'end_date', true ) );
 
-					print '<p>' . $start_datetime->format( 'M j, Y - g:ia' ) . '</p>';
-					print '<p>' . $end_datetime->format( 'M j, Y - g:ia' ) . '</p>';
+					print '<p>Start Time:<br/>' . $start_datetime->format( 'M j, Y - g:ia' ) . '</p>';
+					print '<p>End Time: <br/>' . $end_datetime->format( 'M j, Y - g:ia' ) . '</p>';
 					//print '<a href="">Add to Calendar</a>';
 					?>
                 </div>
