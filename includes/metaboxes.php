@@ -90,6 +90,7 @@ function ewp_event_download_event_purchase_history() {
 		'State',
 		'Zipcode',
 		'Sub Total',
+		'Guest Names' .
 		'Cart Contents',
 		'Charge ID'
 	) );
@@ -106,6 +107,7 @@ function ewp_event_download_event_purchase_history() {
 			$value['state'],
 			$value['zipcode'],
 			$value['sub_total'],
+			$value['name_of_guests'],
 			$value['cart_contents'],
 			$value['charge_id']
 		);

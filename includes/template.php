@@ -121,7 +121,7 @@
                                 <td>
                                     <input type="number" name="tickets_sold[]" class="form-control mt-1 mb-1"
                                            autocomplete="off"
-                                           value="<?php print $event_tickets[ $key ]['tickets_sold']; ?>">
+                                           value="<?php print intval( $event_tickets[ $key ]['tickets_sold'] ); ?>">
                                 </td>
                             </tr>
 						<?php endforeach; ?>

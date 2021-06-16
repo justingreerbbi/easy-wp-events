@@ -98,18 +98,18 @@ class EWP_Event_Stripe_Gateway {
 			if ( ! isset( $charge->error ) ) {
 				global $wpdb;
 				$insert_id = $wpdb->insert( $wpdb->prefix . 'ewp_event_orders', array(
-					'event_id'      => $cart['event'],
-					'first_name'    => $_POST['firstname'],
-					'last_name'     => $_POST['lastname'],
-					'email'         => $_POST['email'],
-					'address'       => $_POST['address'],
-					'city'          => $_POST['city'],
-					'state'         => $_POST['state'],
-					'zipcode'       => $_POST['zipcode'],
-					'sub_total'     => $_POST['sub_total'],
-					'cart_contents' => maybe_serialize( $cart['contents'] ),
-					'names_of_guests' => $_POST['name_of_guests'],
-					'charge_id'     => $charge->id
+					'event_id'       => $cart['event'],
+					'first_name'     => $_POST['firstname'],
+					'last_name'      => $_POST['lastname'],
+					'email'          => $_POST['email'],
+					'address'        => $_POST['address'],
+					'city'           => $_POST['city'],
+					'state'          => $_POST['state'],
+					'zipcode'        => $_POST['zipcode'],
+					'sub_total'      => $_POST['sub_total'],
+					'cart_contents'  => maybe_serialize( $cart['contents'] ),
+					'name_of_guests' => $_POST['name_of_guests'],
+					'charge_id'      => $charge->id
 				) );
 
 				/**
@@ -123,11 +123,12 @@ class EWP_Event_Stripe_Gateway {
 				 * Deduct the tickets sold from the tickets remaining.
 				 */
 				foreach ( $cart['contents'] as $item ) {
+
 					// @todo Check to ensure there is no sales of tickets that are oversold. and limit sales to only what is open for purchase.
 					$event_ticket_types[ $item['id'] ]['ticket_availability'] = ( $event_ticket_types[ $item['id'] ]['ticket_availability'] - $item['tickets_sold'] );
 
 					// Update the tickets sold
-					$event_ticket_types[ $item['id'] ]['tickets_sold'] = $event_ticket_types[ $item['id'] ]['tickets_sold'] + $item['tickets_sold'];
+					$event_ticket_types[ $item['id'] ]['tickets_sold'] = intval( $event_ticket_types[ $item['id'] ]['tickets_sold'] ) + intval( $item['tickets_sold'] );
 				}
 				update_post_meta( $cart['event'], 'event_tickets', $event_ticket_types );
 
