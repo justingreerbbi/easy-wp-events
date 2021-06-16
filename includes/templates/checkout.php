@@ -18,7 +18,7 @@ if ( ! empty( $_POST['card'] ) ) {
     <title>Event Checkout</title>
     <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css' rel='stylesheet'>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
-    <style>@import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
+    <style>
 
         body {
             background-color: #f5eee7;
@@ -118,6 +118,49 @@ if ( ! empty( $_POST['card'] ) ) {
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <script type='text/javascript'
             src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js'></script>
+    <script>
+        $(document).ready(function () {
+            $('#cr_no').on('keyup', function (e) {
+                var val = $(this).val();
+                var newval = '';
+                val = val.replace(/\s/g, '');
+
+                // iterate to letter-spacing after every 4 digits
+                for (var i = 0; i < val.length; i++) {
+                    if (i % 4 == 0 && i > 0) newval = newval.concat(' ');
+                    newval = newval.concat(val[i]);
+                }
+
+                // format in same input field
+                $(this).val(newval);
+            });
+        });
+
+        function formatExpDate(e) {
+            var inputChar = String.fromCharCode(event.keyCode);
+            var code = event.keyCode;
+            var allowedKeys = [8];
+            if (allowedKeys.indexOf(code) !== -1) {
+                return;
+            }
+
+            event.target.value = event.target.value.replace(
+                /^([1-9]\/|[2-9])$/g, '0$1/' // 3 > 03/
+            ).replace(
+                /^(0[1-9]|1[0-2])$/g, '$1/' // 11 > 11/
+            ).replace(
+                /^([0-1])([3-9])$/g, '0$1/$2' // 13 > 01/3
+            ).replace(
+                /^(0?[1-9]|1[0-2])([0-9]{2})$/g, '$1/$2' // 141 > 01/41
+            ).replace(
+                /^([0]+)\/|[0]+$/g, '0' // 0/ > 0 and 00 > 0
+            ).replace(
+                /[^\d\/]|^[\/]*$/g, '' // To allow only digits and `/`
+            ).replace(
+                /\/\//g, '/' // Prevent entering more than 1 `/`
+            );
+        }
+    </script>
 </head>
 <body class='snippet-body'>
 <div class="container d-flex justify-content-center mt-5 mb-5">
@@ -143,13 +186,13 @@ if ( ! empty( $_POST['card'] ) ) {
                             <div class="col-md-6"><span class="font-weight-normal card-text">First Name*</span>
                                 <div class="">
                                     <input type="text" name="firstname" class="form-control" placeholder=""
-                                           required="required" value="<?php ewp_field('firstname'); ?>">
+                                           required="required" value="<?php ewp_field( 'firstname' ); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6"><span class="font-weight-normal card-text">Last Name*</span>
                                 <div class="">
                                     <input type="text" name="lastname" class="form-control" placeholder=""
-                                           required="required" value="<?php ewp_field('lastname'); ?>">
+                                           required="required" value="<?php ewp_field( 'lastname' ); ?>">
                                 </div>
                             </div>
                         </div>
@@ -158,7 +201,7 @@ if ( ! empty( $_POST['card'] ) ) {
                             <span class="font-weight-normal card-text">Email*</span>
                             <div class="">
                                 <input type="text" name="email" class="form-control" placeholder="" required="required"
-                                value="<?php ewp_field('email'); ?>">
+                                       value="<?php ewp_field( 'email' ); ?>">
                             </div>
                         </div>
 
@@ -166,7 +209,7 @@ if ( ! empty( $_POST['card'] ) ) {
                             <span class="font-weight-normal card-text">Address*</span>
                             <div class="">
                                 <input type="text" name="address" class="form-control" placeholder=""
-                                       required="required" value="<?php ewp_field('address'); ?>">
+                                       required="required" value="<?php ewp_field( 'address' ); ?>">
                             </div>
                         </div>
 
@@ -174,19 +217,19 @@ if ( ! empty( $_POST['card'] ) ) {
                             <div class="col-md-6"><span class="font-weight-normal card-text">City*</span>
                                 <div class="">
                                     <input type="text" name="city" class="form-control" placeholder=""
-                                           required="required" value="<?php ewp_field('city'); ?>">
+                                           required="required" value="<?php ewp_field( 'city' ); ?>">
                                 </div>
                             </div>
                             <div class="col-md-3"><span class="font-weight-normal card-text">State*</span>
                                 <div class="">
                                     <input type="text" name="state" class="form-control" placeholder="" maxlength="2"
-                                           required="required" value="<?php ewp_field('state'); ?>">
+                                           required="required" value="<?php ewp_field( 'state' ); ?>">
                                 </div>
                             </div>
                             <div class="col-md-3"><span class="font-weight-normal card-text">State*</span>
                                 <div class="">
                                     <input type="number" name="zipcode" class="form-control" placeholder=""
-                                           maxlength="5" required="required" value="<?php ewp_field('zipcode'); ?>">
+                                           maxlength="5" required="required" value="<?php ewp_field( 'zipcode' ); ?>">
                                 </div>
                             </div>
                         </div>
@@ -224,21 +267,21 @@ if ( ! empty( $_POST['card'] ) ) {
                                         <span class="font-weight-normal card-text">Name of Card*</span>
                                         <div class="">
                                             <input type="text" class="form-control" name="card[name]" placeholder=""
-                                                   required="required" <?php ewp_field('card[name]'); ?>>
+                                                   required="required" <?php ewp_field( 'card[name]' ); ?>>
                                         </div>
                                     </div>
                                     <span class="font-weight-normal card-text">Card Number*</span>
                                     <div class="input"><i class="fa fa-credit-card"></i>
-                                        <input type="number" class="form-control" name="card[num]"
+                                        <input type="text" class="form-control" name="card[num]"
                                                placeholder="0000 0000 0000 0000" id="cr_no" required="required"
-	                                        <?php ewp_field('card[num]'); ?>>
+											<?php ewp_field( 'card[num]' ); ?>>
                                     </div>
                                     <div class="row mt-3 mb-3">
                                         <div class="col-md-6"><span
                                                     class="font-weight-normal card-text">Expiry Date*</span>
                                             <div class="input"><i class="fa fa-calendar"></i>
                                                 <input type="text" class="form-control" name="card[exp]"
-                                                       placeholder="MM/YY" id="card_exp" required="required">
+                                                       placeholder="MM/YY" id="card_exp" required="required" onkeyup="formatExpDate(event)">
                                             </div>
                                         </div>
                                         <div class="col-md-6"><span class="font-weight-normal card-text">CVC/CVV*</span>
