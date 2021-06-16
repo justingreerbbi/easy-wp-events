@@ -1,0 +1,185 @@
+<?php
+/**
+ * Stripe Gateway Logic for Checkout
+ */
+
+class EWP_Event_Stripe_Gateway {
+
+	private $api_pub_key = 'pk_test_rByFEf6MAqwryISgnzBU1AQd';
+	private $api_secret_key = 'sk_test_P9tqT4FFC1XEbwOV8VB4U1cw';
+
+	public $api_endpoint = 'https://api.stripe.com/v1/';
+
+	public $last_error = '';
+	public $last_error_message = '';
+
+	public function createCharge( $post, $cart ) {
+
+		// Create a Customer
+		//print '<pre>';
+		//print_r( $cart );
+		//print '</pre>';
+
+		$event_ticket_types = get_post_meta( $cart['event'], 'event_tickets', true );
+		//print_r( $event_ticket_types );
+
+		$exp = explode( "/", $_POST['card']['exp'], 2 );
+
+		//print_r( $exp );
+		//exit;
+
+		$card_data = array(
+			'card[number]'        => $_POST['card']['num'],
+			'card[exp_month]'     => $exp[0],
+			'card[exp_year]'      => $exp[1],
+			'card[cvc]'           => $_POST['card']['cvc'],
+			'card[name]'          => $_POST['card']['name'],
+			'card[address_line1]' => $_POST['address'],
+			'card[address_city]'  => $_POST['city'],
+			'card[address_state]' => $_POST['state'],
+			'card[address_zip]'   => $_POST['zipcode']
+		);
+
+		$response = wp_remote_post( 'https://api.stripe.com/v1/tokens', array(
+			'body'    => $card_data,
+			'headers' => array(
+				'Authorization' => 'Bearer ' . $this->api_secret_key,
+			),
+		) );
+
+		//print '<pre>';
+		$token_response = json_decode( $response['body'] );
+		/**
+		 * stdClass Object
+		 * (
+		 * [id] => tok_1J2KEqEgjp3snQ78yMn5rXSk
+		 * [object] => token
+		 * [card] => stdClass Object
+		 * (
+		 * [id] => card_1J2KEpEgjp3snQ78mPj3zEul
+		 * [object] => card
+		 * [address_city] => Barberton
+		 * [address_country] =>
+		 * [address_line1] => 559 Jefferson Avenue
+		 * [address_line1_check] => unchecked
+		 * [address_line2] =>
+		 * [address_state] => OH
+		 * [address_zip] => 44203
+		 * [address_zip_check] => unchecked
+		 * [brand] => Visa
+		 * [country] => DE
+		 * [cvc_check] => unchecked
+		 * [dynamic_last4] =>
+		 * [exp_month] => 9
+		 * [exp_year] => 2023
+		 * [fingerprint] => PFE7kEn1K2HQTIl1
+		 * [funding] => credit
+		 * [last4] => 3184
+		 * [metadata] => stdClass Object
+		 * (
+		 * )
+		 *
+		 * [name] => Test Card
+		 * [tokenization_method] =>
+		 * )
+		 *
+		 * [client_ip] => 98.157.96.152
+		 * [created] => 1623694220
+		 * [livemode] =>
+		 * [type] => card
+		 * [used] =>
+		 * )
+		 */
+		//print_r( $token_response );
+
+		// If there is no error, let's display
+		if ( ! isset( $token_response->error ) ) {
+
+			$sub_total = bcmul( $_POST['sub_total'], 100 );
+
+			// Let's Make the Charge as required for the purchase
+			$charge = $this->doCharge( array(
+				'amount'      => $sub_total,
+				'currency'    => 'usd',
+				'source'      => $token_response->id,
+				'description' => 'This needs to be changed to be descriptive of the event'
+			) );
+
+			// Log the sale
+			//global $wpdb;
+			//$wpdb->insert( $wpdb->prefix . 'ewp_event_orders', array() );
+
+			if ( $charge !== false ) {
+				$charge = json_decode( $charge );
+				global $wpdb;
+				$insert_id = $wpdb->insert( $wpdb->prefix . 'ewp_event_orders', array(
+					'event_id'      => $cart['event'],
+					'first_name'    => $_POST['firstname'],
+					'last_name'     => $_POST['lastname'],
+					'email'         => $_POST['email'],
+					'address'       => $_POST['address'],
+					'city'          => $_POST['city'],
+					'state'         => $_POST['state'],
+					'zipcode'       => $_POST['zipcode'],
+					'sub_total'     => $_POST['sub_total'],
+					'cart_contents' => maybe_serialize( $cart['contents'] ),
+					'charge_id'     => $charge->id
+				) );
+
+				// Remove the transient
+				delete_transient( 'wp_easy_event_checkout_' . $_GET['cart'] );
+
+				foreach ( $cart['contents'] as $item ) {
+					// @todo Check to ensure there is no sales of tickets that are oversold. and limit sales to only what is open for purchase.
+					$event_ticket_types[ $item['id'] ]['ticket_availability'] = ( $event_ticket_types[ $item['id'] ]['ticket_availability'] - $item['tickets_sold'] );
+
+					// Update the tickets sold
+					$event_ticket_types[ $item['id'] ]['tickets_sold'] = $event_ticket_types[ $item['id'] ]['tickets_sold'] + $item['tickets_sold'];
+				}
+				update_post_meta( $cart['event'], 'event_tickets', $event_ticket_types );
+
+				wp_redirect( add_query_arg(
+					array(
+						'ewpevents' => 'success',
+						'purchase'  => $charge->id,
+					),
+					site_url()
+				) );
+				exit;
+			} else {
+				exit( $this->last_error_message );
+			}
+
+		} else {
+			$this->last_error_message = $token_response->error->message;
+
+			$respond = array(
+				'error'         => $token_response->error,
+				'error_message' => $token_response->error->message
+			);
+
+			return (object) $respond;
+		}
+	}
+
+	public function doCharge( $order ) {
+		$charge = wp_remote_post( 'https://api.stripe.com/v1/charges', array(
+			'body'    => $order,
+			'headers' => array(
+				'Authorization' => 'Bearer ' . $this->api_secret_key,
+			),
+		) );
+		$charge = json_encode( $charge['body'] );
+
+		// Handle the return
+		if ( isset( $charge->error ) ) {
+			// @todo Add logging to the plugin here.
+			$this->last_error         = $charge->error->code;
+			$this->last_error_message = $charge->error->message;
+
+			return false;
+		} else {
+			return json_decode( $charge );
+		}
+	}
+}
