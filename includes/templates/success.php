@@ -6,6 +6,28 @@ global $wpdb;
 $prepare = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ewp_event_orders WHERE charge_id=%s", array( $_GET['purchase'] ) );
 $result  = $wpdb->get_row( $prepare );
 $cart    = maybe_unserialize( $result->cart_contents );
+
+//print_r( $result );
+
+/**
+ * CUSTOM CONTENT
+ */
+$items = '<ul>';
+foreach ( $cart as $item ) {
+	$items .= '<li>' . $item['name'] . '<small> (x' . $item['tickets_sold'] . ')</small> - <span>' . ewp_event_price( $item['total'] ) . '</span>';
+}
+$items .= '</ul>';
+
+
+$receipt = '<strong>Event</strong>: ' . get_the_title( $result->event_id ) . '<br/>';
+$receipt .= '<strong>Purchaser</strong>: ' . $result->first_name . ' ' . $result->last_name . '<br/>';
+$receipt .= '<strong>Email</strong>: ' . $result->email . '<br/>';
+$receipt .= '<strong>Charge ID</strong>: ' . $result->charge_id . '<br/>';
+
+$success_message = get_post_meta( $result->event_id, 'event_success_message', true );
+$success_message = str_replace( '{{TICKET_PURCHASE_INFO}}', $items, $success_message );
+$success_message = str_replace( '{{SUB_TOTAL}}', '<strong>Total</strong>: $' . number_format( $result->sub_total, 2 ), $success_message );
+$success_message = str_replace( '{{RECEIPT_INFO}}', $receipt, $success_message );
 ?>
 <!doctype html>
 <html>
@@ -368,7 +390,7 @@ $cart    = maybe_unserialize( $result->cart_contents );
 <body class="">
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
     <tr>
-        <td>&nbsp;</td>
+        <td></td>
         <td class="container">
             <ul class="content">
 
@@ -381,30 +403,8 @@ $cart    = maybe_unserialize( $result->cart_contents );
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td>
-                                        <p><?php echo $result->first_name; ?> <?php echo $result->last_name; ?>,</p>
-                                        <p>
-                                            Thank you for your donation. <br/>
-                                            Your purchase has been sent successfully. You
-                                            will be reaching an email containing,
-                                            more information regarding your tickets and event data.<br/> <br/>
-                                            Below is an overview of your tickets:
-                                        </p>
-										<?php foreach ( $cart as $item ): ?>
-                                            <ul>
-                                                <li><?php print $item['name']; ?>
-                                                    <small>(x<?php print $item['tickets_sold']; ?>)</small>
-                                                    <span><?php print ewp_event_price( $item['total'] ); ?></span></li>
-
-                                            </ul>
-										<?php endforeach; ?>
-                                        <p><br/>
-                                            <strong>Total:
-                                                $<?php print number_format( $result->sub_total, 2 ); ?></strong>
-                                        </p>
-
-                                        <hr/>
-                                        <p>If you have any questions, please reach out to <a href="">Email Goes Here</a>
-                                        </p>
+                                        <a href="#" onclick="window.print();return false;">PRINT THIS PAGE</a><br/><br/>
+										<?php print $success_message; ?>
                                     </td>
                                 </tr>
                             </table>
@@ -418,11 +418,11 @@ $cart    = maybe_unserialize( $result->cart_contents );
                 <!-- START FOOTER -->
                 <div class="footer">
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                        <tr>
+                        <!--<tr>
                             <td class="content-block">
                                 <span class="apple-link">This is where content can go for the footer content</span>
                             </td>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <td class="content-block powered-by">
                                 Go Back <a href="<?php print site_url(); ?>"><?php print bloginfo( 'site_name' ); ?></a>.

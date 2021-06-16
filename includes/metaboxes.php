@@ -48,6 +48,9 @@ function wpdocs_save_meta_box( $post_id ) {
 	update_post_meta( $post_id, 'ticket_labels', $_POST['ticket_label'] );
 	update_post_meta( $post_id, 'ticket_prices', $_POST['ticket_price'] );
 	update_post_meta( $post_id, 'ticket_availability', $_POST['ticket_availability'] );
+
+
+	update_post_meta( $post_id, 'event_success_message', $_POST['event_success_message'] );
 }
 
 add_action( 'save_post', 'wpdocs_save_meta_box' );

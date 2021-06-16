@@ -150,6 +150,18 @@
                         </tbody>
                     </table>
                 </div>
+
+                <hr class="mt-4"/>
+                <h4>Purchase Success Message</h4>
+                <p class="description">
+                    The content below will control the success message displayed when someone purchases tickets to this
+                    event.
+					<?php $settings = array(
+						'teeny'         => true,
+						'textarea_rows' => 20,
+						'tabindex'      => 1
+					);
+					wp_editor( esc_html( get_post_meta( $post->ID, 'event_success_message', true ) ), 'event_success_message', $settings ); ?>
             </div>
             <div id="newRow"></div>
             <div class="mt-3">
