@@ -5,9 +5,7 @@ if ( ! isset( $_GET['purchase'] ) ) {
 global $wpdb;
 $prepare = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ewp_event_orders WHERE charge_id=%s", array( $_GET['purchase'] ) );
 $result  = $wpdb->get_row( $prepare );
-
-$cart = maybe_unserialize( $result->cart_contents );
-//print_r( $result );
+$cart    = maybe_unserialize( $result->cart_contents );
 ?>
 <!doctype html>
 <html>

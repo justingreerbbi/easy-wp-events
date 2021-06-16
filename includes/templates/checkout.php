@@ -281,7 +281,7 @@ if ( ! empty( $_POST['card'] ) ) {
                     </div>
                     <div class="p-3">
                         <input type="hidden" name="sub_total" value="<?php print $cart['total']; ?>"/>
-                        <button type="submit" class="btn btn-primary btn-block free-button">CHECKOUT</button>
+                        <button type="submit" class="btn btn-primary btn-block free-button" onclick="return confirm('You are about to checkout for $<?php print ewp_event_cart_total(); ?>')">CHECKOUT</button>
                         <div class="text-center mt-3">
                             <a href="<?php echo get_the_permalink( $cart['event'] ); ?>">Go back to Event Details</a>
                         </div>

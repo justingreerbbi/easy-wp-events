@@ -126,9 +126,14 @@ class EWP_Event_Stripe_Gateway {
 					'charge_id'     => $charge->id
 				) );
 
-				// Remove the transient
+				/**
+				 * Delete the transient
+				 */
 				delete_transient( 'wp_easy_event_checkout_' . $_GET['cart'] );
 
+				/**
+				 * Deduct the tickets sold from the tickets remaining.
+				 */
 				foreach ( $cart['contents'] as $item ) {
 					// @todo Check to ensure there is no sales of tickets that are oversold. and limit sales to only what is open for purchase.
 					$event_ticket_types[ $item['id'] ]['ticket_availability'] = ( $event_ticket_types[ $item['id'] ]['ticket_availability'] - $item['tickets_sold'] );
@@ -137,6 +142,28 @@ class EWP_Event_Stripe_Gateway {
 					$event_ticket_types[ $item['id'] ]['tickets_sold'] = $event_ticket_types[ $item['id'] ]['tickets_sold'] + $item['tickets_sold'];
 				}
 				update_post_meta( $cart['event'], 'event_tickets', $event_ticket_types );
+
+				/**
+				 * Send an email to the purchaser with the info
+				 */
+				$email_content = file_get_contents( dirname( __FILE__ ) . '/email/success.html' );
+
+				// Dynamic Email Content
+				$ticket_list = '';
+				foreach ( $cart['contents'] as $item ) {
+					$ticket_list .= '<li>' . $item['name'] . '<small>(x' . $item['tickets_sold'] . '</small><span>' . ewp_event_price( $item['total'] ) . '</span></li>';
+				}
+				$email_content = str_replace( '{{TICKET_LIST}}', $ticket_list, $email_content );
+				$email_content = str_replace( '{{SUB_TOTAL}}', $_POST['sub_total'], $email_content );
+				$email_content = str_replace( '{{SITE_URL}}', site_url(), $email_content );
+
+				$content_type = function () {
+					return 'text/html';
+				};
+				add_filter( 'wp_mail_content_type', $content_type );
+				wp_mail( get_option( 'admin_email' ), 'New Ticket Sale', $email_content );
+				wp_mail( $_POST['email'], 'Ticket Sale Information', $email_content );
+				remove_filter( 'wp_mail_content_type', $content_type );
 
 				wp_redirect( add_query_arg(
 					array(
