@@ -3,8 +3,14 @@
 <head>
     <meta name="viewport" content="width=device-width"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Purchase Information</title>
+    <title>Purchase Success</title>
     <style>
+        /* -------------------------------------
+            GLOBAL RESETS
+        ------------------------------------- */
+
+        /*All the styling goes here*/
+
         img {
             border: none;
             -ms-interpolation-mode: bicubic;
@@ -353,7 +359,7 @@
 <body class="">
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
     <tr>
-        <td>&nbsp;</td>
+        <td></td>
         <td class="container">
             <ul class="content">
 
@@ -366,23 +372,8 @@
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td>
-                                        <p>
-                                            Thank you for your donation. <br/>
-                                            Your purchase has been sent successfully. You
-                                            will be reaching an email containing,
-                                            more information regarding your tickets and event data.<br/> <br/>
-                                            Below is an overview of your tickets:
-                                        </p>
-                                        <ul>
-                                            {{TICKET_LIST}}
-                                        </ul>
-                                        <p><br/>
-                                            <strong>Total: {{SUB_TOTAL}}}</strong>
-                                        </p>
-
-                                        <hr/>
-                                        <p>If you have any questions, please reach out to <a href="">Email Goes Here</a>
-                                        </p>
+                                        <a href="#" onclick="window.print();return false;">PRINT THIS PAGE</a><br/><br/>
+                                        {{SUCCESS_MESSAGE}}
                                     </td>
                                 </tr>
                             </table>
@@ -396,14 +387,14 @@
                 <!-- START FOOTER -->
                 <div class="footer">
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                        <tr>
+                        <!--<tr>
                             <td class="content-block">
                                 <span class="apple-link">This is where content can go for the footer content</span>
                             </td>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <td class="content-block powered-by">
-                                Go Back <a href="{{SITE_URL}}"><?php print bloginfo( 'site_name' ); ?></a>.
+                                <!--Go Back <a href="<?php print site_url(); ?>"><?php print bloginfo( 'site_name' ); ?></a>.-->
                             </td>
                         </tr>
                     </table>

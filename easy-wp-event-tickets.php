@@ -255,41 +255,55 @@ function ewp_events_options_page() {
         <form method="post" action="options.php">
 			<?php settings_fields( 'ewp_events_options_group' ); ?>
             <h3>Stripe API Keys</h3>
-            <table>
+            <p>Below are settings for the Stripe Payment Gateway. You can get this information from your Stripe Developer Dashboard.</p>
+            <table class="form-table">
                 <tr valign="top">
+                    <th scope="row"><label>Live Stripe Publishable Key</label></th>
                     <td>
-                        <label>Live Stripe Publishable Key</label><br/>
                         <input type="text" name="ewp_events_options[ewp_events_live_stripe_publishable_key]"
-                               value="<?php echo @$options['ewp_events_live_stripe_publishable_key']; ?>"/>
+                               value="<?php echo @$options['ewp_events_live_stripe_publishable_key']; ?>"
+                               class="regular-text"/>
                     </td>
                 </tr>
                 <tr valign="top">
+                    <th scope="row"><label>Live Stripe Secret Key</label></th>
                     <td>
-                        <label>Live Stripe Secret Key</label><br/>
                         <input type="text" name="ewp_events_options[ewp_events_live_stripe_secret_key]"
-                               value="<?php echo @$options['ewp_events_live_stripe_secret_key']; ?>"/>
+                               value="<?php echo @$options['ewp_events_live_stripe_secret_key']; ?>"
+                               class="regular-text"/>
                     </td>
                 </tr>
 
                 <tr valign="top">
+                    <th scope="row">
+                        <label>Test Stripe Publishable Key</label>
+                    </th>
                     <td>
-                        <label>Test Stripe Publishable Key</label><br/>
                         <input type="text" name="ewp_events_options[ewp_events_test_stripe_publishable_key]"
-                               value="<?php echo @$options['ewp_events_test_stripe_publishable_key']; ?>"/>
+                               value="<?php echo @$options['ewp_events_test_stripe_publishable_key']; ?>" class="regular-text"/>
                     </td>
                 </tr>
                 <tr valign="top">
+                    <th scope="row">
+                        <label>Test Stripe Secret Key</label>
+                    </th>
                     <td>
-                        <label>Test Stripe Secret Key</label><br/>
                         <input type="text" name="ewp_events_options[ewp_events_secret_stripe_secret_key]"
-                               value="<?php echo @$options['ewp_events_secret_stripe_secret_key']; ?>"/>
+                               value="<?php echo @$options['ewp_events_secret_stripe_secret_key']; ?>" class="
+                               regular-text"/>
                     </td>
                 </tr>
+            </table>
 
+            <h3>Plugin Styles</h3>
+            <p>Customize some of the plugins wrappers with custom CSS.</p>
+            <table class="form-table">
                 <tr valign="top">
+                    <th scope="row">
+                        <label>Custom CSS - Event Page</label>
+                    </th>
                     <td>
-                        <label>Custom CSS - Event Page</label><br/>
-                        <textarea type="text" name="ewp_events_options[custom_css_single_event_page]">
+                        <textarea type="text" name="ewp_events_options[custom_css_single_event_page]" class="regular-text" style="min-height: 100px;">
                             <?php echo @$options['custom_css_single_event_page']; ?>
                         </textarea>
                     </td>

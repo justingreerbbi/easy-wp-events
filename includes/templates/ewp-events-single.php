@@ -46,7 +46,7 @@ $event_options = get_option( 'ewp_events_options' );
         <div class="row">
             <div class="col-md-9">
                 <h5 class="mb-3">About This Event</h5>
-				<?php the_content(); ?>
+				<?php print apply_filters( 'the_content', $post->post_content ); ?>
 
                 <div class="ewp_events_tickets">
                     <h5 class="mb-3 mt-3">Purchase Tickets</h5>

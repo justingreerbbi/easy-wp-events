@@ -155,13 +155,11 @@
                 <h4>Purchase Success Message</h4>
                 <p class="description">
                     The content below will control the success message displayed when someone purchases tickets to this
-                    event.
-					<?php $settings = array(
-						'teeny'         => true,
-						'textarea_rows' => 20,
-						'tabindex'      => 1
-					);
-					wp_editor( esc_html( get_post_meta( $post->ID, 'event_success_message', true ) ), 'event_success_message', $settings ); ?>
+                    event. Template tags includes the following tags ( {{RECEIPT_INFO}}, {{SUB_TOTAL}},
+                    {{TICKET_PURCHASE_INFO}} )
+                    <textarea
+                            name="event_success_message" style="width: 100%; min-height: 300px;"><?php print get_post_meta( $post->ID, 'event_success_message', true ); ?></textarea>
+
             </div>
             <div id="newRow"></div>
             <div class="mt-3">
