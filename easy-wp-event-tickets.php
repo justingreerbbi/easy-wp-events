@@ -189,6 +189,7 @@ class EWPET {
 	        zipcode               VARCHAR(32) NOT NULL,
 	        sub_total             VARCHAR(32) NOT NULL,
 			cart_contents		  LONGTEXT,
+			name_of_guests		  LONGTEXT,
 			charge_id 			  VARCHAR(255) NOT NULL,
 	        PRIMARY KEY (id)
 	      	);
@@ -196,6 +197,11 @@ class EWPET {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql1 );
+
+		$names_of_guests = $wpdb->query( "SHOW COLUMNS FROM {$wpdb->prefix}ewp_event_orders LIKE 'name_of_guests'" );
+		if ( $names_of_guests != 1 ) {
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}ewp_event_orders ADD `name_of_guests` LONGTEXT AFTER `cart_contents`" );
+		}
 	}
 
 }
@@ -277,6 +283,15 @@ function ewp_events_options_page() {
                         <label>Test Stripe Secret Key</label><br/>
                         <input type="text" name="ewp_events_options[ewp_events_secret_stripe_secret_key]"
                                value="<?php echo @$options['ewp_events_secret_stripe_secret_key']; ?>"/>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <td>
+                        <label>Custom CSS - Event Page</label><br/>
+                        <textarea type="text" name="ewp_events_options[custom_css_single_event_page]">
+                            <?php echo @$options['custom_css_single_event_page']; ?>
+                        </textarea>
                     </td>
                 </tr>
             </table>

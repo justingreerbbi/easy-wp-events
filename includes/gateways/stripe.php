@@ -108,6 +108,7 @@ class EWP_Event_Stripe_Gateway {
 					'zipcode'       => $_POST['zipcode'],
 					'sub_total'     => $_POST['sub_total'],
 					'cart_contents' => maybe_serialize( $cart['contents'] ),
+					'names_of_guests' => $_POST['name_of_guests'],
 					'charge_id'     => $charge->id
 				) );
 
