@@ -63,7 +63,7 @@ $event_options = get_option( 'ewp_events_options' );
                             </thead>
 							<?php foreach ( $event_tickets as $event ) : ?>
                                 <tr>
-                                    <td><?php print $event['label']; ?> - <?php print $event['price']; ?></td>
+                                    <td><?php print $event['label']; ?> - $<?php print $event['price']; ?></td>
                                     <td>
                                         <input type="number" class="form-control"
                                                name="ticket_type_<?php print ewp_events_sanatize_event_title( $event['label'] ); ?>"
