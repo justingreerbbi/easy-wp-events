@@ -140,47 +140,52 @@ if ( ! empty( $_POST['card'] ) ) {
                     <div class="card-body payment-card-body">
 
                         <div class="row mt-3 mb-3">
-                            <div class="col-md-6"><span class="font-weight-normal card-text">First Name</span>
+                            <div class="col-md-6"><span class="font-weight-normal card-text">First Name*</span>
                                 <div class="">
-                                    <input type="text" name="firstname" class="form-control" placeholder="">
+                                    <input type="text" name="firstname" class="form-control" placeholder=""
+                                           required="required">
                                 </div>
                             </div>
-                            <div class="col-md-6"><span class="font-weight-normal card-text">Last Name</span>
+                            <div class="col-md-6"><span class="font-weight-normal card-text">Last Name*</span>
                                 <div class="">
-                                    <input type="text" name="lastname" class="form-control" placeholder="">
+                                    <input type="text" name="lastname" class="form-control" placeholder=""
+                                           required="required">
                                 </div>
                             </div>
                         </div>
 
                         <div class="row">
-                            <span class="font-weight-normal card-text">Email</span>
+                            <span class="font-weight-normal card-text">Email*</span>
                             <div class="">
-                                <input type="text" name="email" class="form-control" placeholder="">
+                                <input type="text" name="email" class="form-control" placeholder="" required="required">
                             </div>
                         </div>
 
                         <div class="row mt-3 mb-3">
-                            <span class="font-weight-normal card-text">Address</span>
+                            <span class="font-weight-normal card-text">Address*</span>
                             <div class="">
-                                <input type="text" name="address" class="form-control" placeholder="">
+                                <input type="text" name="address" class="form-control" placeholder=""
+                                       required="required">
                             </div>
                         </div>
 
                         <div class="row mt-3 mb-3">
-                            <div class="col-md-6"><span class="font-weight-normal card-text">City</span>
+                            <div class="col-md-6"><span class="font-weight-normal card-text">City*</span>
                                 <div class="">
-                                    <input type="text" name="city" class="form-control" placeholder="">
+                                    <input type="text" name="city" class="form-control" placeholder=""
+                                           required="required">
                                 </div>
                             </div>
-                            <div class="col-md-3"><span class="font-weight-normal card-text">State</span>
+                            <div class="col-md-3"><span class="font-weight-normal card-text">State*</span>
                                 <div class="">
-                                    <input type="text" name="state" class="form-control" placeholder="" maxlength="2">
+                                    <input type="text" name="state" class="form-control" placeholder="" maxlength="2"
+                                           required="required">
                                 </div>
                             </div>
-                            <div class="col-md-3"><span class="font-weight-normal card-text">State</span>
+                            <div class="col-md-3"><span class="font-weight-normal card-text">State*</span>
                                 <div class="">
                                     <input type="number" name="zipcode" class="form-control" placeholder=""
-                                           maxlength="5">
+                                           maxlength="5" required="required">
                                 </div>
                             </div>
                         </div>
@@ -215,28 +220,29 @@ if ( ! empty( $_POST['card'] ) ) {
                                  data-parent="#">
                                 <div class="card-body payment-card-body">
                                     <div class="row mt-0 mb-3">
-                                        <span class="font-weight-normal card-text">Name of Card</span>
+                                        <span class="font-weight-normal card-text">Name of Card*</span>
                                         <div class="">
-                                            <input type="text" class="form-control" name="card[name]" placeholder="">
+                                            <input type="text" class="form-control" name="card[name]" placeholder=""
+                                                   required="required">
                                         </div>
                                     </div>
-                                    <span class="font-weight-normal card-text">Card Number</span>
+                                    <span class="font-weight-normal card-text">Card Number*</span>
                                     <div class="input"><i class="fa fa-credit-card"></i>
                                         <input type="number" class="form-control" name="card[num]"
-                                               placeholder="0000 0000 0000 0000" id="cr_no">
+                                               placeholder="0000 0000 0000 0000" id="cr_no" required="required">
                                     </div>
                                     <div class="row mt-3 mb-3">
                                         <div class="col-md-6"><span
-                                                    class="font-weight-normal card-text">Expiry Date</span>
+                                                    class="font-weight-normal card-text">Expiry Date*</span>
                                             <div class="input"><i class="fa fa-calendar"></i>
                                                 <input type="text" class="form-control" name="card[exp]"
-                                                       placeholder="MM/YY" id="card_exp">
+                                                       placeholder="MM/YY" id="card_exp" required="required">
                                             </div>
                                         </div>
-                                        <div class="col-md-6"><span class="font-weight-normal card-text">CVC/CVV</span>
+                                        <div class="col-md-6"><span class="font-weight-normal card-text">CVC/CVV*</span>
                                             <div class="input"><i class="fa fa-lock"></i>
                                                 <input type="text" class="form-control" name="card[cvc]"
-                                                       placeholder="000" maxlength="999">
+                                                       placeholder="000" maxlength="999" required="required">
                                             </div>
                                         </div>
                                     </div>
@@ -251,7 +257,7 @@ if ( ! empty( $_POST['card'] ) ) {
                 <h5 class="mt-4">Summary</h5>
                 <div class="card">
                     <div class="d-flex justify-content-between p-3">
-                        <div class="d-flex flex-column"><span>Donation Amount </span>
+                        <div class="d-flex flex-column"><strong>Donation Amount </strong>
                             <a href="#" class="billing">for <?php print get_the_title( $cart['event'] ); ?></a>
                         </div>
                         <div class="mt-1">
@@ -281,7 +287,10 @@ if ( ! empty( $_POST['card'] ) ) {
                     </div>
                     <div class="p-3">
                         <input type="hidden" name="sub_total" value="<?php print $cart['total']; ?>"/>
-                        <button type="submit" class="btn btn-primary btn-block free-button" onclick="return confirm('You are about to checkout for $<?php print ewp_event_cart_total(); ?>')">CHECKOUT</button>
+                        <button type="submit" class="btn btn-primary btn-block free-button"
+                                onclick="return confirm('You are about to checkout for $<?php print ewp_event_cart_total(); ?>')">
+                            CHECKOUT
+                        </button>
                         <div class="text-center mt-3">
                             <a href="<?php echo get_the_permalink( $cart['event'] ); ?>">Go back to Event Details</a>
                         </div>
