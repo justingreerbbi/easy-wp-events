@@ -35,7 +35,7 @@ function wpdocs_save_meta_box( $post_id ) {
 		$event_tickets[ ewp_events_sanatize_event_title( $_POST['ticket_label'][ $x ] ) ] = array(
 			'id'                  => ewp_events_sanatize_event_title( $_POST['ticket_label'][ $x ] ),
 			'label'               => $_POST['ticket_label'][ $x ],
-			'price'               => number_format( $_POST['ticket_price'][ $x ], 2 ),
+			'price'               =>  $_POST['ticket_price'][ $x ],
 			'ticket_availability' => $_POST['ticket_availability'][ $x ],
 			'tickets_sold'        => $_POST['tickets_sold'][ $x ]
 		);
