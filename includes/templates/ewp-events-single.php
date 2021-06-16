@@ -81,11 +81,12 @@ global $post;
                 <div class="ewp-events-module mb-5">
                     <h5>Date and Time</h5>
 					<?php
-					$start_datetime = get_post_meta( $post->ID, 'start_date', true );
-					$end_datetime   = get_post_meta( $post->ID, 'end_date', true );
-					print '<p>' . $start_datetime . '</p>';
-					print '<p>' . $end_datetime . '</p>';
-					print '<a href="">Add to Calendar</a>';
+					$start_datetime = new DateTime( get_post_meta( $post->ID, 'start_date', true ) );
+					$end_datetime   = new DateTime( get_post_meta( $post->ID, 'end_date', true ) );
+
+					print '<p>' . $start_datetime->format( 'M j, Y - g:ia' ) . '</p>';
+					print '<p>' . $end_datetime->format( 'M j, Y - g:ia' ) . '</p>';
+					//print '<a href="">Add to Calendar</a>';
 					?>
                 </div>
 
@@ -96,7 +97,7 @@ global $post;
 					$venue_address = get_post_meta( $post->ID, 'venue_address', true );
 					print '<p>' . $venue_name . '</p>';
 					print '<p>' . $venue_address . '</p>';
-					print '<a href="">View Map</a>';
+					//print '<a href="">View Map</a>';
 					?>
                 </div>
 
