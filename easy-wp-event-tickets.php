@@ -215,7 +215,7 @@ function ewp_events_css_and_js() {
 
 require 'plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-	'https://github.com/user-name/repo-name/',
+	'https://github.com/justingreerbbi/easy-wp-events/',
 	__FILE__,
 	'unique-plugin-or-theme-slug'
 );
