@@ -195,8 +195,20 @@ class EWPET {
 	      	);
 		";
 
+		$sql2 = "
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}ewp_event_tickets (
+			id 					  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	        event_id              INT		   NOT NULL,
+	        ticket_name           VARCHAR(255) NOT NULL,
+	        ticket_price          VARCHAR(32)  NOT NULL,
+	        email           	  VARCHAR(255) NOT NULL,
+	        PRIMARY KEY (id)
+	      	);
+		";
+
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql1 );
+		dbDelta( $sql2 );
 
 		$names_of_guests = $wpdb->query( "SHOW COLUMNS FROM {$wpdb->prefix}ewp_event_orders LIKE 'name_of_guests'" );
 		if ( $names_of_guests != 1 ) {
@@ -219,9 +231,8 @@ function ewp_events_css_and_js() {
 	}
 }
 
-add_action( 'admin_menu', 'mt_add_pages' );
-
-function mt_add_pages() {
+add_action( 'admin_menu', 'ewp_events_add_settings_pages' );
+function ewp_events_add_settings_pages() {
 	add_submenu_page(
 		'edit.php?post_type=ewp_events',
 		__( 'Settings', 'menu-test' ),
@@ -230,21 +241,12 @@ function mt_add_pages() {
 		'ewp_event_settings',
 		'ewp_events_options_page'
 	);
-
-	function mt_settings_page() {
-		echo "<h2>" . __( 'Test Settings', 'menu-test' ) . "</h2>";
-	}
 }
 
 add_action( 'admin_init', 'ewp_events_plugin_register_settings' );
 function ewp_events_plugin_register_settings() {
 	add_option( 'ewp_events_options', 'This is my option value.' );
 	register_setting( 'ewp_events_options_group', 'ewp_events_options', 'myplugin_callback' );
-}
-
-add_action( 'admin_menu', 'ewp_events_register_options_page' );
-function ewp_events_register_options_page() {
-	add_options_page( 'Page Title', 'Plugin Menu', 'manage_options', 'myplugin', 'ewp_events_options_page' );
 }
 
 function ewp_events_options_page() {

@@ -14,6 +14,7 @@ class EWP_Event_Stripe_Gateway {
 	public $last_error_message = '';
 
 	public function createCharge( $post, $cart ) {
+
 		$plugin_options = get_option( 'ewp_events_options' );
 
 		$event_ticket_types = get_post_meta( $cart['event'], 'event_tickets', true );
@@ -113,6 +114,20 @@ class EWP_Event_Stripe_Gateway {
 					'charge_id'      => $charge->id
 				) );
 
+				foreach ( $cart['contents'] as $type ) {
+					$num_of_tickets = $type['tickets_sold'];
+					$ticket_type    = $type['name'];
+					for ( $x = 0; $x < $num_of_tickets; $x ++ ) {
+						$insert_id = $wpdb->insert( $wpdb->prefix . 'ewp_event_tickets', array(
+							'event_id' => $cart['event'],
+							'ticket_name' => $ticket_type,
+							'ticket_price' => '',
+							'email' => $_POST['email'],
+							'charge_id' => $charge->id
+						) );
+					}
+				}
+
 				/**
 				 * Delete the transient
 				 */
@@ -153,7 +168,7 @@ class EWP_Event_Stripe_Gateway {
 					$ticket_list .= '<li>' . $item['name'] . '<small>(x' . $item['tickets_sold'] . '</small><span>' . ewp_event_price( $item['total'] ) . '</span></li>';
 				}
 				$custom_success_message = str_replace( '{{TICKET_PURCHASE_INFO}}', $ticket_list, $custom_success_message );
-				$custom_success_message = str_replace( '{{SUB_TOTAL}}', '<strong>Total:</strong> $'.$_POST['sub_total'], $custom_success_message );
+				$custom_success_message = str_replace( '{{SUB_TOTAL}}', '<strong>Total:</strong> $' . $_POST['sub_total'], $custom_success_message );
 				$custom_success_message = str_replace( '{{RECEIPT_INFO}}', $receipt, $custom_success_message );
 
 				// Add the content to the template template success.html
