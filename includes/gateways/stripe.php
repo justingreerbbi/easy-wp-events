@@ -163,8 +163,8 @@ class EWP_Event_Stripe_Gateway {
 					return 'text/html';
 				};
 				add_filter( 'wp_mail_content_type', $content_type );
-				wp_mail( 'justin@justin-greer.com', 'New Ticket Sale', $email_content );
-				//wp_mail( $_POST['email'], 'Ticket Sale Information', $email_content );
+				//wp_mail( , 'New Ticket Sale', $email_content );
+				wp_mail( $_POST['email'], 'Ticket Sale Information', $email_content );
 				remove_filter( 'wp_mail_content_type', $content_type );
 
 				wp_redirect( add_query_arg(

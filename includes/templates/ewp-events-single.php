@@ -89,11 +89,11 @@ $event_options = get_option( 'ewp_events_options' );
                 <div class="ewp-events-module mb-5">
                     <h5>Date and Time</h5>
 					<?php
-					$start_datetime = new DateTime( get_post_meta( $post->ID, 'start_date', true ) );
-					$end_datetime   = new DateTime( get_post_meta( $post->ID, 'end_date', true ) );
+					$start_datetime = get_post_meta( $post->ID, 'start_date', true );
+					$end_datetime   = get_post_meta( $post->ID, 'end_date', true );
 
-					print '<p>Start Time:<br/>' . $start_datetime->format( 'M j, Y - g:ia' ) . '</p>';
-					print '<p>End Time: <br/>' . $end_datetime->format( 'M j, Y - g:ia' ) . '</p>';
+					print '<p>Start Time:<br/>' . date( 'M j, Y - g:ia', strtotime( $start_datetime ) ) . '</p>';
+					print '<p>End Time: <br/>' . date( 'M j, Y - g:ia', strtotime( $end_datetime ) ) . '</p>';
 					//print '<a href="">Add to Calendar</a>';
 					?>
                 </div>

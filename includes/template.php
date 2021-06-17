@@ -62,12 +62,12 @@
                 <div class="row">
                     <div class="col-6">
                         <label>Event Start Date</label>
-                        <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" name="start_date"
+                        <input class="form-control" type="datetime-local" value="2021-08-19T13:45:00" name="start_date"
                                value="<?php print get_post_meta( $post->ID, 'start_date', true ); ?>"/>
                     </div>
                     <div class="col-6">
                         <label>Event End Date</label>
-                        <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" name="end_date"
+                        <input class="form-control" type="datetime-local" value="2021-08-19T13:45:00" name="end_date"
                                value="<?php print get_post_meta( $post->ID, 'end_date', true ); ?>"/>
                     </div>
                 </div>
@@ -79,8 +79,9 @@
                 <p class="description">
                     Ticket Prices and Availability are listed below. Manage Tickets
                     available for this event using the editor below.
-                    <a href="<?php print admin_url( 'admin-post.php' ); ?>?action=download_event_data&event=<?php print $post->ID; ?>">Download
-                        Purchases</a>
+                    <a href="<?php print admin_url( 'admin-post.php' ); ?>?action=download_event_data&event=<?php print $post->ID; ?>">
+                        Download Purchases
+                    </a>
                 <div class="inputFormRow">
                     <table class="widefat ewpevents-pricing form-group mt-3">
                         <thead>
