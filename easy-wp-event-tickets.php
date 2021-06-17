@@ -255,7 +255,8 @@ function ewp_events_options_page() {
         <form method="post" action="options.php">
 			<?php settings_fields( 'ewp_events_options_group' ); ?>
             <h3>Stripe API Keys</h3>
-            <p>Below are settings for the Stripe Payment Gateway. You can get this information from your Stripe Developer Dashboard.</p>
+            <p>Below are settings for the Stripe Payment Gateway. You can get this information from your Stripe
+                Developer Dashboard.</p>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row"><label>Live Stripe Publishable Key</label></th>
@@ -280,7 +281,8 @@ function ewp_events_options_page() {
                     </th>
                     <td>
                         <input type="text" name="ewp_events_options[ewp_events_test_stripe_publishable_key]"
-                               value="<?php echo @$options['ewp_events_test_stripe_publishable_key']; ?>" class="regular-text"/>
+                               value="<?php echo @$options['ewp_events_test_stripe_publishable_key']; ?>"
+                               class="regular-text"/>
                     </td>
                 </tr>
                 <tr valign="top">
@@ -303,7 +305,8 @@ function ewp_events_options_page() {
                         <label>Custom CSS - Event Page</label>
                     </th>
                     <td>
-                        <textarea type="text" name="ewp_events_options[custom_css_single_event_page]" class="regular-text" style="min-height: 100px;">
+                        <textarea type="text" name="ewp_events_options[custom_css_single_event_page]"
+                                  class="regular-text" style="min-height: 100px;">
                             <?php echo @$options['custom_css_single_event_page']; ?>
                         </textarea>
                     </td>
@@ -315,15 +318,15 @@ function ewp_events_options_page() {
 	<?php
 }
 
-require 'plugin-update-checker/plugin-update-checker.php';
+/**
+ * Plugin Updater
+ */
+require_once( dirname( __FILE__ ) . '/includes/update/plugin-update-checker.php' );
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	'https://github.com/justingreerbbi/easy-wp-events/',
 	__FILE__,
 	'easy_wp_events'
 );
-
-$myUpdateChecker->setBranch( 'production' );
-$myUpdateChecker->getVcsApi()->enableReleaseAssets();
 
 function EWPET() {
 	return EWPET::instance();
