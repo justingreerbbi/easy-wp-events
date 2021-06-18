@@ -173,7 +173,7 @@ class EWP_Event_Stripe_Gateway {
 				}
 
 				$custom_success_message = str_replace( '{{TICKET_PURCHASE_INFO}}', $ticket_list, $custom_success_message );
-				$custom_success_message = str_replace( '{{SUB_TOTAL}}', '<strong>Total:</strong> $' . $_POST['sub_total'], $custom_success_message );
+				$custom_success_message = str_replace( '{{SUB_TOTAL}}', '<strong>Total:</strong> $' . number_format( $_POST['sub_total'], 2 ), $custom_success_message );
 				$custom_success_message = str_replace( '{{RECEIPT_INFO}}', $receipt, $custom_success_message );
 
 				// Add the content to the template template success.html
