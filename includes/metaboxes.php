@@ -35,7 +35,7 @@ function wpdocs_save_meta_box( $post_id ) {
 		$event_tickets[ ewp_events_sanatize_event_title( $_POST['ticket_label'][ $x ] ) ] = array(
 			'id'                  => ewp_events_sanatize_event_title( $_POST['ticket_label'][ $x ] ),
 			'label'               => $_POST['ticket_label'][ $x ],
-			'price'               =>  $_POST['ticket_price'][ $x ],
+			'price'               => $_POST['ticket_price'][ $x ],
 			'ticket_availability' => $_POST['ticket_availability'][ $x ],
 			'tickets_sold'        => $_POST['tickets_sold'][ $x ]
 		);
@@ -95,10 +95,19 @@ function ewp_event_download_event_purchase_history() {
 		'Sub Total',
 		'Guest Names',
 		'Cart Contents',
-		'Charge ID'
+		'Charge ID',
+		'Tickets'
 	) );
 
 	foreach ( $results as $key => $value ) {
+		$prepare_tickets = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ewp_event_tickets WHERE charge_id=%d", array( $value['charge_id'] ) );
+		$tickets         = $wpdb->get_results( $prepare_tickets );
+
+		$ticket_info = '';
+		foreach ( $tickets as $ticket ) {
+			$ticket_info .= '#' . $ticket->id . ' ' . $ticket->ticket_name . "\n";
+		}
+
 		$modified_values = array(
 			$value['id'],
 			$value['event_id'],
@@ -109,10 +118,11 @@ function ewp_event_download_event_purchase_history() {
 			$value['city'],
 			$value['state'],
 			$value['zipcode'],
-			$value['sub_total'],
+			'$'.number_format( $value['sub_total'], 2 ),
 			$value['name_of_guests'],
 			$value['cart_contents'],
-			$value['charge_id']
+			$value['charge_id'],
+			$ticket_info
 		);
 		fputcsv( $fp, $modified_values );
 	}
