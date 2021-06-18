@@ -37,17 +37,19 @@ function wpdocs_save_meta_box( $post_id ) {
 			'label'               => $_POST['ticket_label'][ $x ],
 			'price'               => $_POST['ticket_price'][ $x ],
 			'ticket_availability' => $_POST['ticket_availability'][ $x ],
-			'tickets_sold'        => $_POST['tickets_sold'][ $x ]
+			'tickets_sold'        => $_POST['tickets_sold'][ $x ],
+			'ticket_description'  => $_POST['ticket_description'][ $x ]
 		);
 	}
 
 	// Formatted tickets
 	update_post_meta( $post_id, 'event_tickets', $event_tickets );
 
-	// Raw tickets incase someone wants these values
+	// Raw tickets incas someone wants these values
 	update_post_meta( $post_id, 'ticket_labels', $_POST['ticket_label'] );
 	update_post_meta( $post_id, 'ticket_prices', $_POST['ticket_price'] );
 	update_post_meta( $post_id, 'ticket_availability', $_POST['ticket_availability'] );
+	update_post_meta( $post_id, 'ticket_description', $_POST['ticket_description'] );
 
 
 	update_post_meta( $post_id, 'event_success_message', $_POST['event_success_message'] );
@@ -56,7 +58,7 @@ function wpdocs_save_meta_box( $post_id ) {
 add_action( 'save_post', 'wpdocs_save_meta_box' );
 
 function wpt_events_location() {
-	require_once( dirname( __FILE__ ) . '/template.php' );
+	require_once( dirname( __FILE__ ) . '/admin-metabox-template.php' );
 }
 
 /**
@@ -118,7 +120,7 @@ function ewp_event_download_event_purchase_history() {
 			$value['city'],
 			$value['state'],
 			$value['zipcode'],
-			'$'.number_format( $value['sub_total'], 2 ),
+			'$' . number_format( $value['sub_total'], 2 ),
 			$value['name_of_guests'],
 			$value['cart_contents'],
 			$value['charge_id'],

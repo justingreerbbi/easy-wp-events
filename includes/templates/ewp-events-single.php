@@ -8,28 +8,9 @@ global $post;
 $event_options = get_option( 'ewp_events_options' );
 ?>
 <style>
-    .StripeElement {
-        background-color: white;
-        padding: 8px 12px;
-        border-radius: 4px;
-        border: 1px solid transparent;
-        box-shadow: 0 1px 3px 0 #e6ebf1;
-        -webkit-transition: box-shadow 150ms ease;
-        transition: box-shadow 150ms ease;
+    .easy_wp_event_table {
+        text-align: left;
     }
-
-    .StripeElement--focus {
-        box-shadow: 0 1px 3px 0 #cfd7df;
-    }
-
-    .StripeElement--invalid {
-        border-color: #fa755a;
-    }
-
-    .StripeElement--webkit-autofill {
-        background-color: #fefde5 !important;
-    }
-
     input[type="text"], input[type="number"] {
         font-size: inherit;
     }
@@ -56,15 +37,18 @@ $event_options = get_option( 'ewp_events_options' );
                     <form name="event-tickets" id="frontend-ticket-form">
 						<?php wp_nonce_field( 'ewp_events_ticket_nonce_check_' . $post->ID, 'ewp_events_ticket_nonce_check' ); ?>
                         <input type="hidden" name="event_id" value="<?php print $post->ID; ?>"/>
-                        <table>
+                        <table class="easy_wp_event_table">
                             <thead>
                             <th width=80%">Ticket Type</th>
                             <th width="20%">Qty</th>
                             </thead>
 							<?php foreach ( $event_tickets as $event ) : ?>
                                 <tr>
-                                    <td><?php print $event['label']; ?> - $<?php print $event['price']; ?></td>
                                     <td>
+                                        <strong><?php print $event['label']; ?> - $<?php print $event['price']; ?></strong><br/>
+                                        <small><?php print $event['ticket_description']; ?></small>
+                                    </td>
+                                    <td style="vertical-align: middle;">
                                         <input type="number" class="form-control"
                                                name="ticket_type_<?php print ewp_events_sanatize_event_title( $event['label'] ); ?>"
                                                min="" max="<?php print $event['ticket_availability']; ?>">

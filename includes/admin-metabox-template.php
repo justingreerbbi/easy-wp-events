@@ -62,12 +62,14 @@
                 <div class="row">
                     <div class="col-6">
                         <label>Event Start Date</label>
-                        <input class="form-control" type="datetime-local" value="<?php print get_post_meta( $post->ID, 'start_date', true ); ?>" name="start_date"
+                        <input class="form-control" type="datetime-local"
+                               value="<?php print get_post_meta( $post->ID, 'start_date', true ); ?>" name="start_date"
                                value="<?php print get_post_meta( $post->ID, 'start_date', true ); ?>"/>
                     </div>
                     <div class="col-6">
                         <label>Event End Date</label>
-                        <input class="form-control" type="datetime-local" value="<?php print get_post_meta( $post->ID, 'end_date', true ); ?>" name="end_date"
+                        <input class="form-control" type="datetime-local"
+                               value="<?php print get_post_meta( $post->ID, 'end_date', true ); ?>" name="end_date"
                                value="<?php print get_post_meta( $post->ID, 'end_date', true ); ?>"/>
                     </div>
                 </div>
@@ -125,6 +127,17 @@
                                            value="<?php print intval( $event_tickets[ $key ]['tickets_sold'] ); ?>">
                                 </td>
                             </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <small>Ticket Description</small>
+                                    <textarea class="form-control"
+                                              name="ticket_description[]"><?php print $event_tickets[ $key ]['ticket_description']; ?></textarea>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
 						<?php endforeach; ?>
                         <tr class="single-ticket-row">
                             <td>
@@ -148,6 +161,16 @@
                                        disabled="disabled" autocomplete="off">
                             </td>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <small>Ticket Description</small>
+                                <textarea class="form-control" name="ticket_description[]"></textarea>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -159,7 +182,8 @@
                     event. Template tags includes the following tags ( {{RECEIPT_INFO}}, {{SUB_TOTAL}},
                     {{TICKET_PURCHASE_INFO}} )
                     <textarea
-                            name="event_success_message" style="width: 100%; min-height: 300px;"><?php print get_post_meta( $post->ID, 'event_success_message', true ); ?></textarea>
+                            name="event_success_message"
+                            style="width: 100%; min-height: 300px;"><?php print get_post_meta( $post->ID, 'event_success_message', true ); ?></textarea>
 
             </div>
             <div id="newRow"></div>
