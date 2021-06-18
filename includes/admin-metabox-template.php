@@ -188,7 +188,7 @@
                     {{TICKET_PURCHASE_INFO}} )
                     <textarea
                             name="event_success_message"
-                            style="width: 100%; min-height: 300px;"><?php print get_post_meta( $post->ID, 'event_success_message', true ); ?></textarea>
+                            style="width: 100%; min-height: 300px; margin-top: 1em"><?php print get_post_meta( $post->ID, 'event_success_message', true ); ?></textarea>
 
             </div>
         </div>
