@@ -175,6 +175,11 @@
                     </table>
                 </div>
 
+                <div id="newRow"></div>
+                <div class="mt-3">
+                    <button id="addRow" type="button" class="btn btn-info">Add New Ticket</button>
+                </div>
+
                 <hr class="mt-4"/>
                 <h4>Purchase Success Message</h4>
                 <p class="description">
@@ -185,10 +190,6 @@
                             name="event_success_message"
                             style="width: 100%; min-height: 300px;"><?php print get_post_meta( $post->ID, 'event_success_message', true ); ?></textarea>
 
-            </div>
-            <div id="newRow"></div>
-            <div class="mt-3">
-                <button id="addRow" type="button" class="btn btn-info">Add New Ticket</button>
             </div>
         </div>
     </div>
