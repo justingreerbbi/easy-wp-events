@@ -93,7 +93,7 @@ function ewp_event_download_event_purchase_history() {
 		'State',
 		'Zipcode',
 		'Sub Total',
-		'Guest Names' .
+		'Guest Names',
 		'Cart Contents',
 		'Charge ID'
 	) );
