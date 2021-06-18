@@ -335,6 +335,7 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	__FILE__,
 	'easy_wp_events'
 );
+$myUpdateChecker->getVcsApi()->enableReleaseAssets();
 
 function EWPET() {
 	return EWPET::instance();
