@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Easy WP Events
  * Plugin URI: http://justin-greer.cm
- * Version: 1.2.0
+ * Version: 1.3.0
  * Description: Create Events and Sell Customizable Tickets
  * Author: Justin Greer
  * Author URI: http://justin-greer.com
@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 class EWPET {
 
 	/** @var string current plugin version */
-	public static $version = '1.2.0';
+	public static $version = '1.3.0';
 
 	/** @var object container instance for plugin */
 	public static $instance = null;
