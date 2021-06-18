@@ -119,11 +119,11 @@ class EWP_Event_Stripe_Gateway {
 					$ticket_type    = $type['name'];
 					for ( $x = 0; $x < $num_of_tickets; $x ++ ) {
 						$insert_id = $wpdb->insert( $wpdb->prefix . 'ewp_event_tickets', array(
-							'event_id' => $cart['event'],
-							'ticket_name' => $ticket_type,
+							'event_id'     => $cart['event'],
+							'ticket_name'  => $ticket_type,
 							'ticket_price' => '',
-							'email' => $_POST['email'],
-							'charge_id' => $charge->id
+							'email'        => $_POST['email'],
+							'charge_id'    => $charge->id
 						) );
 					}
 				}
@@ -164,9 +164,14 @@ class EWP_Event_Stripe_Gateway {
 
 				// Dynamic Email Content
 				$ticket_list = '';
-				foreach ( $cart['contents'] as $item ) {
-					$ticket_list .= '<li>' . $item['name'] . '<small>(x' . $item['tickets_sold'] . '</small><span>' . ewp_event_price( $item['total'] ) . '</span></li>';
+
+				global $wpdb;
+				$prepare_tickets = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ewp_event_tickets WHERE charge_id=%s", array( $charge->id ) );
+				$tickets         = $wpdb->get_results( $prepare_tickets );
+				foreach ( $tickets as $item ) {
+					$ticket_list .= '<li>Ticket #' . $item->id . ' - ' . $item->ticket_name . ' (x1)</li>';
 				}
+
 				$custom_success_message = str_replace( '{{TICKET_PURCHASE_INFO}}', $ticket_list, $custom_success_message );
 				$custom_success_message = str_replace( '{{SUB_TOTAL}}', '<strong>Total:</strong> $' . $_POST['sub_total'], $custom_success_message );
 				$custom_success_message = str_replace( '{{RECEIPT_INFO}}', $receipt, $custom_success_message );

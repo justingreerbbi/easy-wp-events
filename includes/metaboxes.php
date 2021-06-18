@@ -102,7 +102,7 @@ function ewp_event_download_event_purchase_history() {
 	) );
 
 	foreach ( $results as $key => $value ) {
-		$prepare_tickets = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ewp_event_tickets WHERE charge_id=%d", array( $value['charge_id'] ) );
+		$prepare_tickets = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ewp_event_tickets WHERE charge_id=%s", array( $value['charge_id'] ) );
 		$tickets         = $wpdb->get_results( $prepare_tickets );
 
 		$ticket_info = '';

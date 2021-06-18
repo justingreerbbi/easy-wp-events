@@ -12,9 +12,11 @@ $cart    = maybe_unserialize( $result->cart_contents );
 /**
  * CUSTOM CONTENT
  */
-$items = '<ul>';
-foreach ( $cart as $item ) {
-	$items .= '<li>' . $item['name'] . '<small> (x' . $item['tickets_sold'] . ')</small> - <span>' . ewp_event_price( $item['total'] ) . '</span>';
+$items           = '<ul>';
+$prepare_tickets = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ewp_event_tickets WHERE charge_id=%s", array( $_GET['purchase'] ) );
+$tickets         = $wpdb->get_results( $prepare_tickets );
+foreach ( $tickets as $item ) {
+	$items .= '<li>Ticket #' . $item->id . ' - ' . $item->ticket_name . ' (x1)</li>';
 }
 $items .= '</ul>';
 
