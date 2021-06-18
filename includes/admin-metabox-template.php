@@ -111,6 +111,9 @@
                                            placeholder="Ticket Name"
                                            value="<?php print $event_tickets[ $key ]['label']; ?>"
                                            autocomplete="off">
+                                    <small>Ticket Description</small>
+                                    <textarea class="form-control"
+                                              name="ticket_description[]"><?php print $event_tickets[ $key ]['ticket_description']; ?></textarea>
                                 </td>
                                 <td>
                                     <input type="number" name="ticket_price[]" class="form-control mt-1 mb-1"
@@ -127,17 +130,6 @@
                                            value="<?php print intval( $event_tickets[ $key ]['tickets_sold'] ); ?>">
                                 </td>
                             </tr>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <small>Ticket Description</small>
-                                    <textarea class="form-control"
-                                              name="ticket_description[]"><?php print $event_tickets[ $key ]['ticket_description']; ?></textarea>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
 						<?php endforeach; ?>
                         <tr class="single-ticket-row">
                             <td>
@@ -147,6 +139,8 @@
                             <td>
                                 <input type="text" name="ticket_label[]" class="form-control mt-1 mb-1"
                                        placeholder="Ticket Name" autocomplete="off">
+                                <small>Ticket Description</small>
+                                <textarea class="form-control" name="ticket_description[]"></textarea>
                             </td>
                             <td>
                                 <input type="number" name="ticket_price[]" class="form-control mt-1 mb-1"
@@ -160,16 +154,6 @@
                                 <input type="number" name="ticket_sold[]" class="form-control mt-1 mb-1"
                                        disabled="disabled" autocomplete="off">
                             </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <small>Ticket Description</small>
-                                <textarea class="form-control" name="ticket_description[]"></textarea>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
                         </tr>
                         </tbody>
                     </table>
