@@ -115,13 +115,25 @@ class EWPET {
 	}
 
 	public function register_post_type() {
+		$event_cpt_labels = array(
+			'name'               => _x( 'Events', 'Post Type General Name', 'easy_wp_events' ),
+			'singular_name'      => _x( 'Event', 'Post Type Singular Name', 'easy_wp_events' ),
+			'menu_name'          => __( 'Events', 'easy_wp_events' ),
+			'parent_item_colon'  => __( 'Parent Event', 'easy_wp_events' ),
+			'all_items'          => __( 'All Events', 'easy_wp_events' ),
+			'view_item'          => __( 'View Event', 'easy_wp_events' ),
+			'add_new_item'       => __( 'Add New Events', 'easy_wp_events' ),
+			'add_new'            => __( 'Add New', 'easy_wp_events' ),
+			'edit_item'          => __( 'Edit Event', 'easy_wp_events' ),
+			'update_item'        => __( 'Update Event', 'easy_wp_events' ),
+			'search_items'       => __( 'Search Event', 'easy_wp_events' ),
+			'not_found'          => __( 'Not Found', 'easy_wp_events' ),
+			'not_found_in_trash' => __( 'Not found in Trash', 'easy_wp_events' ),
+		);
 		register_post_type(
 			'ewp_events',
 			array(
-				'labels'       => array(
-					'name'          => __( 'Events' ),
-					'singular_name' => __( 'Event' ),
-				),
+				'labels'       => $event_cpt_labels,
 				'public'       => true,
 				'has_archive'  => true,
 				'rewrite'      => array( 'slug' => 'events' ),
