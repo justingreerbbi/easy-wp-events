@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Easy WP Event Tickets
  * Plugin URI: http://justin-greer.cm
- * Version: 1.0.0
+ * Version: 1.0.1
  * Description: Create Events and Sell Customizable Tickets
  * Author: Justin Greer
  * Author URI: http://justin-greer.com
@@ -202,6 +202,7 @@ class EWPET {
 	        ticket_name           VARCHAR(255) NOT NULL,
 	        ticket_price          VARCHAR(32)  NOT NULL,
 	        email           	  VARCHAR(255) NOT NULL,
+			charge_id             VARCHAR(255) NOT NULL,
 	        PRIMARY KEY (id)
 	      	);
 		";
@@ -213,6 +214,11 @@ class EWPET {
 		$names_of_guests = $wpdb->query( "SHOW COLUMNS FROM {$wpdb->prefix}ewp_event_orders LIKE 'name_of_guests'" );
 		if ( $names_of_guests != 1 ) {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}ewp_event_orders ADD `name_of_guests` LONGTEXT AFTER `cart_contents`" );
+		}
+
+		$charge_id = $wpdb->query( "SHOW COLUMNS FROM {$wpdb->prefix}ewp_event_tickets LIKE 'charge_id'" );
+		if ( $charge_id != 1 ) {
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}ewp_event_tickets ADD `charge_id` VARCHAR(255) NOT NULL AFTER `email`" );
 		}
 	}
 
