@@ -38,9 +38,13 @@ function wpdocs_save_meta_box( $post_id ) {
 			'price'               => $_POST['ticket_price'][ $x ],
 			'ticket_availability' => $_POST['ticket_availability'][ $x ],
 			'tickets_sold'        => $_POST['tickets_sold'][ $x ],
-			'ticket_description'  => $_POST['ticket_description'][ $x ]
+			'ticket_description'  => $_POST['ticket_description'][ $x ],
+			'ticket_type'         => $_POST['ticket_type'][ $x ]
 		);
 	}
+
+	print_r( $_POST['ticket_type'] );
+	exit;
 
 	// Formatted tickets
 	update_post_meta( $post_id, 'event_tickets', $event_tickets );
@@ -50,6 +54,7 @@ function wpdocs_save_meta_box( $post_id ) {
 	update_post_meta( $post_id, 'ticket_prices', $_POST['ticket_price'] );
 	update_post_meta( $post_id, 'ticket_availability', $_POST['ticket_availability'] );
 	update_post_meta( $post_id, 'ticket_description', $_POST['ticket_description'] );
+	update_post_meta( $post_id, 'ticket_type', $_POST['ticket_type'] );
 
 
 	update_post_meta( $post_id, 'event_success_message', $_POST['event_success_message'] );

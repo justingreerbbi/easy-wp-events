@@ -77,9 +77,9 @@
 
             <hr/>
             <div id="easy-wp-events-ticket-information">
-                <h3>Ticket Prices and Availability</h3>
+                <h3>Ticket Prices, Availability, and Items</h3>
                 <p class="description">
-                    Ticket Prices and Availability are listed below. Manage Tickets
+                    Ticket Prices, Availability and other purchase items are listed below. Manage Tickets
                     available for this event using the editor below.
                     <a href="<?php print admin_url( 'admin-post.php' ); ?>?action=download_event_data&event=<?php print $post->ID; ?>">
                         Download Purchases
@@ -92,12 +92,11 @@
                         <th scope="col">Price</th>
                         <th scope="col">Availability</th>
                         <th scope="col" width="10%">Sold</th>
+                        <th scope="col" width="10%">Type</th>
                         </thead>
                         <tbody>
 						<?php
 						$event_tickets = get_post_meta( $post->ID, 'event_tickets', true );
-
-						//print_r( $event_tickets );
 
 						foreach ( $event_tickets as $key => $value ): ?>
 
@@ -129,6 +128,16 @@
                                            autocomplete="off"
                                            value="<?php print intval( $event_tickets[ $key ]['tickets_sold'] ); ?>">
                                 </td>
+                                <td>
+                                    <select name="ticket_type[]" class="form-control">
+                                        <option value="ticket" <?php print $event_tickets[ $key ]['ticket_type'] == 'ticket' ? 'selected' : ''; ?>>
+                                            Ticket
+                                        </option>
+                                        <option value="item" <?php print $event_tickets[ $key ]['ticket_type'] == 'item' ? 'selected' : ''; ?>>
+                                            Item
+                                        </option>
+                                    </select>
+                                </td>
                             </tr>
 						<?php endforeach; ?>
                         <tr class="single-ticket-row">
@@ -152,7 +161,13 @@
                             </td>
                             <td>
                                 <input type="number" name="ticket_sold[]" class="form-control mt-1 mb-1"
-                                       disabled="disabled" autocomplete="off">
+                                       autocomplete="off">
+                            </td>
+                            <td>
+                                <select name="ticket_type[]" class="form-control">
+                                    <option value="ticket">Ticket</option>
+                                    <option value="item">Item</option>
+                                </select>
                             </td>
                         </tr>
                         </tbody>
@@ -161,7 +176,7 @@
 
                 <div id="newRow"></div>
                 <div class="mt-3">
-                    <button id="addRow" type="button" class="btn btn-info">Add New Ticket</button>
+                    <button id="addRow" type="button" class="btn btn-info">Add new Ticket</button>
                 </div>
 
                 <hr class="mt-4"/>

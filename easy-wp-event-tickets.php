@@ -219,9 +219,22 @@ class EWPET {
 	      	);
 		";
 
+		$sql3 = "
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}ewp_event_items (
+			id 					  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	        event_id              INT		   NOT NULL,
+	        item_name             VARCHAR(255) NOT NULL,
+	        item_price            VARCHAR(32)  NOT NULL,
+	        email           	  VARCHAR(255) NOT NULL,
+			charge_id             VARCHAR(255) NOT NULL,
+	        PRIMARY KEY (id)
+	      	);
+		";
+
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql1 );
 		dbDelta( $sql2 );
+		dbDelta( $sql3 );
 
 		$names_of_guests = $wpdb->query( "SHOW COLUMNS FROM {$wpdb->prefix}ewp_event_orders LIKE 'name_of_guests'" );
 		if ( $names_of_guests != 1 ) {

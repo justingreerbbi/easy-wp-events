@@ -32,6 +32,9 @@ Answer to foo bar dilemma.
 
 == Changelog ==
 
+Add checkboxes to each ticket item to control if it is a ticket or just an item.
+Ability to remove/clear all data for an event? This must have password protection to it because it can really mess things up.
+
 = 1.4.0 =
 * Updated page container
 
