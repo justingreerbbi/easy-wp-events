@@ -7,7 +7,6 @@ class EWP_Event_Stripe_Gateway {
 
 	private $api_pub_key = 'pk_test_rByFEf6MAqwryISgnzBU1AQd';
 	private $api_secret_key = 'sk_test_P9tqT4FFC1XEbwOV8VB4U1cw';
-
 	public $api_endpoint = 'https://api.stripe.com/v1/';
 
 	public $last_error = '';
@@ -15,11 +14,9 @@ class EWP_Event_Stripe_Gateway {
 
 	public function createCharge( $post, $cart ) {
 
-		$plugin_options = get_option( 'ewp_events_options' );
-
+		$plugin_options     = get_option( 'ewp_events_options' );
 		$event_ticket_types = get_post_meta( $cart['event'], 'event_tickets', true );
-
-		$exp = explode( "/", $_POST['card']['exp'], 2 );
+		$exp                = explode( "/", $_POST['card']['exp'], 2 );
 
 		$card_data = array(
 			'card[number]'        => $_POST['card']['num'],
