@@ -31,12 +31,12 @@ function ewp_events_update_cart_ajax() {
 	parse_str( $_POST['formData'], $request );
 	$event_id = intval( $request['event_id'] );
 
-	// verifiy the nonce for security
+	// verify the nonce for security
 	if ( ! wp_verify_nonce( $request['ewp_events_ticket_nonce_check'], 'ewp_events_ticket_nonce_check_' . $event_id ) ) {
 		//exit( -1 );
 	}
 
-	// Get all of the possible tickets avalaible
+	// Get all of the possible tickets available
 	$event_tickets = get_post_meta( $event_id, 'event_tickets', true );
 
 	// We look for the main tickets and calulate everything up into the total checkout
@@ -48,11 +48,13 @@ function ewp_events_update_cart_ajax() {
 
 		if ( ! empty( $event['id'] ) ) {
 			$tickets_sold       = $request[ 'ticket_type_' . $event['id'] ];
+			$type               = $request[ 'type_' . $event['id'] ];
 			$ticket_total       = $request[ 'price_' . $event['id'] ] * $tickets_sold;
 			$cart['contents'][] = array(
 				'id'           => $event['id'],
 				'name'         => $event['label'],
 				'tickets_sold' => $tickets_sold,
+				'type'         => $type,
 				'total'        => $ticket_total,
 			);
 
@@ -64,7 +66,6 @@ function ewp_events_update_cart_ajax() {
 
 	$cart_total = 0.00;
 	foreach ( $cart['contents'] as $item ) {
-		//print $item['total']. '\n';
 		$cart_total = $cart_total + $item['total'];
 	}
 

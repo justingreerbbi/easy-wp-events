@@ -114,7 +114,7 @@ class EWP_Event_Stripe_Gateway {
 				foreach ( $cart['contents'] as $type ) {
 					$num_of_tickets = $type['tickets_sold'];
 					$ticket_type    = $type['name'];
-					$type           = $type['ticket_type'];
+					$type           = $type['type'];
 
 					if ( $type == 'ticket' ) {
 						for ( $x = 0; $x < $num_of_tickets; $x ++ ) {

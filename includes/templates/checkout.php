@@ -5,6 +5,8 @@ if ( $cart === false ) {
 	exit;
 }
 
+print_r( $cart );
+
 if ( ! empty( $_POST['card'] ) ) {
 	$stripe   = new EWP_Event_Stripe_Gateway();
 	$checkout = $stripe->createCharge( $_POST, $cart );

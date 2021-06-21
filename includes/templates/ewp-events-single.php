@@ -58,6 +58,9 @@ $event_options = get_option( 'ewp_events_options' );
                                             <input type="hidden"
                                                    name="price_<?php print ewp_events_sanatize_event_title( $event['label'] ); ?>"
                                                    value="<?php print $event['price']; ?>"/>
+                                            <input type="hidden"
+                                                   name="type_<?php print ewp_events_sanatize_event_title( $event['label'] ); ?>"
+                                                   value="<?php print $event['ticket_type']; ?>"/>
                                         </td>
                                     </tr>
 								<?php endforeach; ?>
