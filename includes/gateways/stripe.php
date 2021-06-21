@@ -179,8 +179,16 @@ class EWP_Event_Stripe_Gateway {
 				global $wpdb;
 				$prepare_tickets = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ewp_event_tickets WHERE charge_id=%s", array( $charge->id ) );
 				$tickets         = $wpdb->get_results( $prepare_tickets );
+
+				$prepare_items     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ewp_event_items WHERE charge_id=%s", array( $charge->id ) );
+				$none_ticket_items = $wpdb->get_results( $prepare_items );
+
 				foreach ( $tickets as $item ) {
 					$ticket_list .= '<li>Ticket #' . $item->id . ' - ' . $item->ticket_name . ' (x1)</li>';
+				}
+
+				foreach ( $none_ticket_items as $item ) {
+					$ticket_list .= '<li>' . $item->item_name . ' (x1)</li>';
 				}
 
 				$custom_success_message = str_replace( '{{TICKET_PURCHASE_INFO}}', $ticket_list, $custom_success_message );

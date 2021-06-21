@@ -99,16 +99,25 @@ function ewp_event_download_event_purchase_history() {
 		'Guest Names',
 		'Cart Contents',
 		'Charge ID',
-		'Tickets'
+		'Tickets',
+		'Items'
 	) );
 
 	foreach ( $results as $key => $value ) {
 		$prepare_tickets = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ewp_event_tickets WHERE charge_id=%s", array( $value['charge_id'] ) );
 		$tickets         = $wpdb->get_results( $prepare_tickets );
 
+		$prepare_items = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ewp_event_items WHERE charge_id=%s", array( $value['charge_id'] ) );
+		$items         = $wpdb->get_results( $prepare_items );
+
 		$ticket_info = '';
 		foreach ( $tickets as $ticket ) {
 			$ticket_info .= '#' . $ticket->id . ' ' . $ticket->ticket_name . "\n";
+		}
+
+		$item_info = '';
+		foreach ( $items as $item ) {
+			$item_info .= $item->item_name . "\n";
 		}
 
 		$modified_values = array(
@@ -125,7 +134,8 @@ function ewp_event_download_event_purchase_history() {
 			$value['name_of_guests'],
 			$value['cart_contents'],
 			$value['charge_id'],
-			$ticket_info
+			$ticket_info,
+			$item_info
 		);
 		fputcsv( $fp, $modified_values );
 	}
