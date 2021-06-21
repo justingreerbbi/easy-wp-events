@@ -4,7 +4,7 @@ Donate link: https://dash10.digital/
 Tags: events, tickets, stripe
 Requires at least: 4.7
 Tested up to: 5.7
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -34,6 +34,9 @@ Answer to foo bar dilemma.
 
 Add checkboxes to each ticket item to control if it is a ticket or just an item.
 Ability to remove/clear all data for an event? This must have password protection to it because it can really mess things up.
+
+= 1.6.0 =
+* Random Patches
 
 = 1.5.0 =
 * seperated items and tickets
