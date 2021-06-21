@@ -14,7 +14,7 @@ function ewpet_add_events_metaboxes() {
 	);
 }
 
-function wpdocs_save_meta_box( $post_id ) {
+function ewp_events_save_meta_box( $post_id ) {
 
 	if ( $_POST['post_type'] != 'ewp_events' ) {
 		return $post_id;
@@ -52,11 +52,11 @@ function wpdocs_save_meta_box( $post_id ) {
 	update_post_meta( $post_id, 'ticket_availability', $_POST['ticket_availability'] );
 	update_post_meta( $post_id, 'ticket_description', $_POST['ticket_description'] );
 	update_post_meta( $post_id, 'ticket_type', $_POST['ticket_type'] );
-	
+
 	update_post_meta( $post_id, 'event_success_message', $_POST['event_success_message'] );
 }
 
-add_action( 'save_post', 'wpdocs_save_meta_box' );
+add_action( 'save_post', 'ewp_events_save_meta_box' );
 
 function wpt_events_location() {
 	require_once( dirname( __FILE__ ) . '/admin-metabox-template.php' );

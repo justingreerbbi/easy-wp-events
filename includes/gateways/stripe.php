@@ -117,14 +117,28 @@ class EWP_Event_Stripe_Gateway {
 				foreach ( $cart['contents'] as $type ) {
 					$num_of_tickets = $type['tickets_sold'];
 					$ticket_type    = $type['name'];
-					for ( $x = 0; $x < $num_of_tickets; $x ++ ) {
-						$insert_id = $wpdb->insert( $wpdb->prefix . 'ewp_event_tickets', array(
-							'event_id'     => $cart['event'],
-							'ticket_name'  => $ticket_type,
-							'ticket_price' => '',
-							'email'        => $_POST['email'],
-							'charge_id'    => $charge->id
-						) );
+					$type           = $type['ticket_type'];
+
+					if ( $type == 'ticket' ) {
+						for ( $x = 0; $x < $num_of_tickets; $x ++ ) {
+							$insert_id = $wpdb->insert( $wpdb->prefix . 'ewp_event_tickets', array(
+								'event_id'     => $cart['event'],
+								'ticket_name'  => $ticket_type,
+								'ticket_price' => '',
+								'email'        => $_POST['email'],
+								'charge_id'    => $charge->id
+							) );
+						}
+					} else {
+						for ( $x = 0; $x < $num_of_tickets; $x ++ ) {
+							$insert_id = $wpdb->insert( $wpdb->prefix . 'ewp_event_items', array(
+								'event_id'   => $cart['event'],
+								'item_name'  => $ticket_type,
+								'item_price' => '',
+								'email'      => $_POST['email'],
+								'charge_id'  => $charge->id
+							) );
+						}
 					}
 				}
 
