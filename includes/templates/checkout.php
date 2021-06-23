@@ -226,7 +226,7 @@ if ( ! empty( $_POST['card'] ) ) {
                                            required="required" value="<?php ewp_field( 'state' ); ?>">
                                 </div>
                             </div>
-                            <div class="col-md-3"><span class="font-weight-normal card-text">State*</span>
+                            <div class="col-md-3"><span class="font-weight-normal card-text">Zipcode*</span>
                                 <div class="">
                                     <input type="number" name="zipcode" class="form-control" placeholder=""
                                            maxlength="5" required="required" value="<?php ewp_field( 'zipcode' ); ?>">
